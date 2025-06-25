@@ -1,6 +1,5 @@
 import React from "react";
 import "./Home.css";
-import { useTheme } from "../../context/ThemeContext";
 
 interface TrustLine {
   account: string;
@@ -31,7 +30,6 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ myWalletAddress, membersList, wgtParameters }) => {
-    const { theme } = useTheme();
     return (
         <div className="home-container dark:text-white text-black">
             <h1 className="home-title dark:text-white text-black">Community Trustlines</h1>

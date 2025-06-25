@@ -35,7 +35,13 @@ export const useConditionTree = (initialTree: ConditionTree) => {
   const updateNode = useCallback((id: string, updates: Partial<LockCondition | LockGroup | TraitCondition>) => {
     const updateNode = (node: ConditionTree): ConditionTree => {
       if (node.id === id) {
-        return { ...node, ...updates };
+        if (node.type === 'group') {
+          return { ...(node as LockGroup), ...(updates as Partial<LockGroup>) };
+        } else if (node.type === 'lock') {
+          return { ...(node as LockCondition), ...(updates as Partial<LockCondition>) };
+        } else {
+          return { ...(node as TraitCondition), ...(updates as Partial<TraitCondition>) };
+        }
       }
 
       if (node.type === 'group') {
