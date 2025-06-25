@@ -1,0 +1,23 @@
+{
+  "name": "@matrix-widget-toolkit/tokengate-tapp-mui",
+  "version": "1.0.0",
+  "description": "Matrix Widget Toolkit MUI Example",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:https": "cross-env VITE_DEV_SSL=true vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "preview:https": "cross-env VITE_DEV_SSL=true vite preview",
+    "lint": "eslint .",
+    "tsc": "tsc",
+    "translate": "i18next 'src/**/*.{ts,tsx}'",
+    "clean": "yarn run clean:build",
+    "clean:build": "rm -rf build",
+    "clean:cache": "rm -rf node_modules/.vite"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-basic-ssl": "^2.0.0"
+  }
+}
