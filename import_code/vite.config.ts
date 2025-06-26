@@ -57,7 +57,8 @@ export default defineConfig({
     allowedHosts: [
       '7d908e32-33e8-415b-a403-947fa246ed4f-00-2xnmgyowpqahb.kirk.replit.dev',
       '15c32806-20be-45c8-b3ea-1f0a3e72dfb5-00-2ojqtwmdtbb4m.kirk.replit.dev',
-      '15c32806-20be-45c8-b3ea-1f0a3e72dfb5-00-2ojqtwmdtbb4m.kirk.replit.dev'
+      '15c32806-20be-45c8-b3ea-1f0a3e72dfb5-00-2ojqtwmdtbb4m.kirk.replit.dev',
+      '7a36-155-94-255-2.ngrok-free.app'
       
       // Allow your ngrok host
       // 'localhost', // Allow local development
