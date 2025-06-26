@@ -6,7 +6,7 @@ import { RoomSettings } from '../types'; // Import RoomSettings instead of Condi
 
 export const useConditionTree = () => {
   const widgetApi = useWidgetApi();
-  const apiUrl = 'https://15c32806-20be-45c8-b3ea-1f0a3e72dfb5-00-2ojqtwmdtbb4m.kirk.replit.dev';
+  const apiUrl = 'https://7a36-155-94-255-2.ngrok-free.app ';
 
   const fetchConditionTree = useCallback(async (): Promise<RoomSettings | null> => {
     const rawRoomId = widgetApi.widgetParameters.roomId;

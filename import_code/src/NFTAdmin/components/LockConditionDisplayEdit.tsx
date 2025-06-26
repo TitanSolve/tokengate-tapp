@@ -20,7 +20,7 @@ export const LockConditionDisplayEdit = ({ condition, onChange, onRemove }: Lock
   const [nftImageUrl, setNftImageUrl] = useState<string | null>(condition.nftImageUrl || null);
   const [fetchingImage, setFetchingImage] = useState(false);
   const [imageError, setImageError] = useState<string | null>(null);
-  const apiUrl = 'https://15c32806-20be-45c8-b3ea-1f0a3e72dfb5-00-2ojqtwmdtbb4m.kirk.replit.dev';
+  const apiUrl = 'https://7a36-155-94-255-2.ngrok-free.app ';
 
   // Sync local state with condition prop when it changes
   useEffect(() => {
