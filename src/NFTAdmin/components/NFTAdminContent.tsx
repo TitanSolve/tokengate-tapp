@@ -13,8 +13,8 @@ import {
 } from '@mui/material';
 import { ConditionTree, LockCondition, TraitCondition } from '../types';
 import { BasicConditionForm } from './BasicConditionForm.js';
-import { QuantityConditionEditor } from './QuantityConditionEditor.js';
-import { TraitsConditionEditor } from './TraitsConditionEditor.js';
+// import { QuantityConditionEditor } from './QuantityConditionEditor.js';
+// import { TraitsConditionEditor } from './TraitsConditionEditor.js';
 
 interface NFTAdminContentProps {
   conditionTree: ConditionTree;
@@ -45,13 +45,13 @@ export const NFTAdminContent: React.FC<NFTAdminContentProps> = ({
   displayName,
   initialTab,
   editingBasic,
-  editingQuantity,
-  editingTraits,
+  // editingQuantity,
+  // editingTraits,
   onKickMessageChange,
   onTreeChange,
   onSave,
-  onAddCondition,
-  onAddSubgroup,
+  // onAddCondition,
+  // onAddSubgroup,
   describeConditionTree,
   onTabChange,
 }) => {
