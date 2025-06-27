@@ -121,7 +121,7 @@ export const NFTAdminContent: React.FC<NFTAdminContentProps> = ({
               />
             )}
           </Box>
-
+{/* 
           <Box role="tabpanel" hidden={currentTab !== 'quantity'} sx={{ py: 3 }}>
             {currentTab === 'quantity' && (
               <QuantityConditionEditor
@@ -141,7 +141,7 @@ export const NFTAdminContent: React.FC<NFTAdminContentProps> = ({
               />
             )}
           </Box>
-        </Box>
+        </Box> */}
 
         <Divider sx={{ my: 3 }} />
 
