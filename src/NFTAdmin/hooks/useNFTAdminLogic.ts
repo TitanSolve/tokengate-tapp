@@ -21,26 +21,26 @@ export const useNFTAdminLogic = () => {
   const [saveError, setSaveError] = useState<string | null>(null);
   const [displayName, setDisplayName] = useState<string | null>(null);
 
-  const fetchConditionTree = async (): Promise<RoomSettings | null> => {
-    const rawRoomId = widgetApi.widgetParameters.roomId;
-    if (!rawRoomId) return null;
-    const trimmedRoomId = trimRoomId(rawRoomId);
-    try {
-      const response = await fetch(`${apiUrl}/api/admin/settings?roomId=${encodeURIComponent(trimmedRoomId)}`, {
-        headers: { Authorization: 'Bearer 1234567890QWERTYUIOP' },
-      });
-      if (!response.ok) throw new Error('Failed to fetch settings');
-      const data = await response.json();
-      if (!data.tree) {
-        console.warn('Fetched settings missing tree:', data);
-        return null;
-      }
-      return { tree: data.tree, kickMessage: data.kick_message || '' };
-    } catch (error) {
-      console.error('Fetch error:', error);
-      return null;
-    }
-  };
+  // const fetchConditionTree = async (): Promise<RoomSettings | null> => {
+  //   const rawRoomId = widgetApi.widgetParameters.roomId;
+  //   if (!rawRoomId) return null;
+  //   const trimmedRoomId = trimRoomId(rawRoomId);
+  //   try {
+  //     const response = await fetch(`${apiUrl}/api/admin/settings?roomId=${encodeURIComponent(trimmedRoomId)}`, {
+  //       headers: { Authorization: 'Bearer 1234567890QWERTYUIOP' },
+  //     });
+  //     if (!response.ok) throw new Error('Failed to fetch settings');
+  //     const data = await response.json();
+  //     if (!data.tree) {
+  //       console.warn('Fetched settings missing tree:', data);
+  //       return null;
+  //     }
+  //     return { tree: data.tree, kickMessage: data.kick_message || '' };
+  //   } catch (error) {
+  //     console.error('Fetch error:', error);
+  //     return null;
+  //   }
+  // };
 
   const initializeTree = async () => {
     console.log('Starting initialization...');
