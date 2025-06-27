@@ -7,7 +7,7 @@ import { encryptData, trimRoomId } from '../utils';
 
 export const useNFTAdminLogic = () => {
   const widgetApi = useWidgetApi();
-  const apiUrl = 'https://7a36-155-94-255-2.ngrok-free.app';
+  const apiUrl = 'https://3701-155-94-255-2.ngrok-free.app';
   const secretKey = process.env.ENCRYPTION_KEY || 'default_secret_key';
 
   const [savedConditionTree, setSavedConditionTree] = useState<ConditionTree | null>(null);
@@ -28,7 +28,7 @@ export const useNFTAdminLogic = () => {
     try {
       const backendUrl = `${apiUrl}/api/admin/settings?roomId=${encodeURIComponent(trimmedRoomId)}`;
       console.log('Fetching settings from:', backendUrl);
-      
+
       const response = await fetch(`${apiUrl}/api/admin/settings?roomId=${encodeURIComponent(trimmedRoomId)}`, {
         headers: { Authorization: 'Bearer 1234567890QWERTYUIOP' },
       });
