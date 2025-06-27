@@ -49,9 +49,10 @@ export const useNFTAdminLogic = () => {
       kickMessage: '',
     };
     console.log('Fetching condition tree...');
-    const fetchedSettings = await fetchConditionTree();
-    console.log('Fetched settings:', fetchedSettings);
-    const settingsToUse = fetchedSettings ?? defaultSettings;
+    // const fetchedSettings = await fetchConditionTree();
+    // console.log('Fetched settings:', fetchedSettings);
+    const settingsToUse = /*fetchedSettings ??*/ defaultSettings;
+    console.log("settingsToUse:", settingsToUse);
 
     if (!settingsToUse.tree) {
       console.error('Tree is undefined, using default');
