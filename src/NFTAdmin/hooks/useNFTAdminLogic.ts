@@ -30,6 +30,7 @@ export const useNFTAdminLogic = () => {
       console.log('Fetching settings from:', backendUrl);
 
       const response = await fetch(`${apiUrl}/api/admin/settings?roomId=${encodeURIComponent(trimmedRoomId)}`, {
+        method: 'GET',
         headers: { Authorization: 'Bearer 1234567890QWERTYUIOP' },
       });
       if (!response.ok) throw new Error('Failed to fetch settings');
