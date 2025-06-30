@@ -49,8 +49,7 @@ export const useNFTAdminLogic = () => {
         {
           method: "GET",
           headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer 1234567890QWERTYUIOP",
+            "Authorization": "Bearer 1234567890QWERTYUIOP"
           },
         }
       );
