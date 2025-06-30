@@ -164,7 +164,11 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
       console.log(`🔍 DIRECT TEST: Issuer = ${issuer}`);
       console.log(`🔍 DIRECT TEST: Taxon = ${taxon}`);
       
-      const url = `${apiUrl}/api/nfts/image-only?issuer=${encodeURIComponent(issuer)}&taxon=${encodeURIComponent(taxon)}`;
+      const requestBody = {
+        issuer: encodeURIComponent(issuer),
+        taxon: encodeURIComponent(taxon),
+      };
+      const url = `${apiUrl}/api/nfts/image-only`;
       console.log(`🔍 DIRECT TEST: URL = ${url}`);
       
       // Make a fetch request directly
@@ -172,12 +176,13 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
       console.log('🔍 DIRECT TEST: Sending request...');
       
       const response = await fetch(url, {
-        method: 'GET',
+        method: 'POST',
         headers: {
           'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
+        body: JSON.stringify(requestBody),
       });
       
       const endTime = Date.now();
