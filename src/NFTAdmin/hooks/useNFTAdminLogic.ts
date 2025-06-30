@@ -37,20 +37,20 @@ export const useNFTAdminLogic = () => {
     if (!rawRoomId) return null;
     const trimmedRoomId = trimRoomId(rawRoomId);
     try {
-      const backendUrl = `${apiUrl}/api/admin/settings?roomId=${encodeURIComponent(
-        trimmedRoomId
-      )}`;
+      const requestBody = {
+        roomId: encodeURIComponent(trimmedRoomId),
+      };
+      const backendUrl = `${apiUrl}/api/admin/settings`;
       console.log("Fetching settings from:", backendUrl);
 
       const response = await fetch(
-        `${apiUrl}/api/admin/settings?roomId=${encodeURIComponent(
-          trimmedRoomId
-        )}`,
+        `${apiUrl}/api/admin/settings`,
         {
-          method: "GET",
+          method: "POST",
           headers: {
-            // Authorization: "Bearer 1234567890QWERTYUIOP",
+            Authorization: "Bearer 1234567890QWERTYUIOP",
           },
+          body: JSON.stringify(requestBody),
         }
       );
       if (!response.ok) throw new Error("Failed to fetch settings");
