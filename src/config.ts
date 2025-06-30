@@ -3,6 +3,7 @@ interface ApiUrls {
   synapseUrl: string | undefined;
   xrplMainnetUrl: string | undefined;
   xrplTestnetUrl: string | undefined;
+  backendUrl: string | undefined;
 }
 
 const API_URLS: ApiUrls = {
@@ -10,6 +11,7 @@ const API_URLS: ApiUrls = {
   synapseUrl: import.meta.env.VITE_SYNAPSE_URL,
   xrplMainnetUrl: import.meta.env.VITE_XRPL_MAIN_NET_URL,
   xrplTestnetUrl: import.meta.env.VITE_XRPL_TEST_NET_URL,
+  backendUrl: import.meta.env.VITE_BACKEND_URL
 };
 
 export default API_URLS;

@@ -1,5 +1,6 @@
 // NFT Image Fetching Service - Direct implementation from import code
 import { getFromCache, updateCache } from '../cache';
+import API_URLS from "../../config.ts";
 
 export interface NFTMetadata {
   issuer: string;
@@ -14,7 +15,7 @@ export interface NFTMetadata {
 }
 
 // Use local proxy to avoid CORS issues, the proxy is configured in vite.config.ts
-const API_URL = '';  // Empty base URL will use the current origin with the proxy path
+const API_URL = API_URLS.backendUrl;//'';  // Empty base URL will use the current origin with the proxy path
 
 // API key - exactly matching import code
 const API_KEY = '1234567890QWERTYUIOP';
