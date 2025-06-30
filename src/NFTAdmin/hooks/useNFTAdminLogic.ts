@@ -53,6 +53,7 @@ export const useNFTAdminLogic = () => {
         body: JSON.stringify(requestBody),
       });
       if (!response.ok) throw new Error("Failed to fetch settings");
+      console.log("Response:", response, JSON.stringify(response));
       const data = await response.json();
       if (!data.tree) {
         console.warn("Fetched settings missing tree:", data);
