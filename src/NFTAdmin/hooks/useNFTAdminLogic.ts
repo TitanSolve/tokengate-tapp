@@ -87,25 +87,25 @@ export const useNFTAdminLogic = () => {
       console.error("Tree is undefined, using default");
       settingsToUse.tree = defaultSettings.tree;
     }
-    const settingsJSON = JSON.parse(JSON.stringify(settingsToUse));
-    console.log("Setting savedConditionTree to:", settingsJSON.tree, typeof settingsJSON.tree);
-    setSavedConditionTree(settingsJSON.tree);
-    setKickMessage(settingsJSON.kickMessage);
+    const settingsJSON = JSON.parse(JSON.stringify(settingsToUse.tree));
+    console.log("Setting savedConditionTree to:", settingsJSON, typeof settingsJSON);
+    setSavedConditionTree(settingsJSON);
+    setKickMessage(settingsToUse.kickMessage);
 
-    const treeType = settingsJSON.tree.type as string | undefined;
+    const treeType = settingsJSON.type as string | undefined;
     console.log("Tree type:", treeType);
-    console.log("Initializing editing states with:", settingsJSON.tree.type);
+    console.log("Initializing editing states with:", settingsJSON.type);
     switch (treeType) {
       case "lock":
-        setEditingBasic(settingsJSON.tree as LockCondition);
+        setEditingBasic(settingsJSON as LockCondition);
         setActiveTab("basic");
         break;
       case "group":
-        setEditingQuantity(settingsJSON.tree as LockGroup);
+        setEditingQuantity(settingsJSON as LockGroup);
         setActiveTab("quantity");
         break;
       case "trait":
-        setEditingTraits(settingsJSON.tree as TraitCondition);
+        setEditingTraits(settingsJSON as TraitCondition);
         setActiveTab("traits");
         break;
       default:
@@ -136,7 +136,7 @@ export const useNFTAdminLogic = () => {
           setDisplayName(content.name || "Untitled Room");
         }
       } catch (error) {
-        console.error("Error fetching room name:", error);
+        console.error("Error fetching roomname:", error);
       }
     };
 
