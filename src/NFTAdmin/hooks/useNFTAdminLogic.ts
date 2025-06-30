@@ -297,6 +297,14 @@ export const useNFTAdminLogic = () => {
     console.log("trimming roomId:", trimmedRoomId);
     const userId = widgetApi.widgetParameters.userId || "";
     console.log("userId:", userId);
+    const requestBody = {
+      roomId: trimmedRoomId,
+      conditionTree: treeToSave,
+      accessToken: secretKey,
+      userId: userId,
+      kickMessage: kickMessage,
+    };
+    console.log("Request body for saving settings:", requestBody);
     try {
       const response = await fetch(`${apiUrl}/api/admin/saveSettings`, {
         method: "POST",
@@ -304,13 +312,7 @@ export const useNFTAdminLogic = () => {
           "Content-Type": "application/json",
           Authorization: "Bearer 1234567890QWERTYUIOP",
         },
-        body: JSON.stringify({
-          roomId: trimmedRoomId,
-          conditionTree: treeToSave,
-          accessToken: secretKey,
-          userId: userId,
-          kickMessage: kickMessage,
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       if (!response.ok) {
