@@ -7,7 +7,7 @@ import { encryptData, trimRoomId } from '../utils';
 
 export const useNFTAdminLogic = () => {
   const widgetApi = useWidgetApi();
-  const apiUrl = 'https://d68b-155-94-255-2.ngrok-free.app';
+  const apiUrl = 'https://fc15-155-94-255-2.ngrok-free.app';
   const secretKey = process.env.ENCRYPTION_KEY || 'default_secret_key';
 
   const [savedConditionTree, setSavedConditionTree] = useState<ConditionTree   | null>(null);
