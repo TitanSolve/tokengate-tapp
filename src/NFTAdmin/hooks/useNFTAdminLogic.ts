@@ -80,6 +80,7 @@ export const useNFTAdminLogic = () => {
     };
     console.log("Fetching condition tree...");
     const fetchedSettings = await fetchConditionTree();
+    console.log("Fetched settings:", fetchedSettings);
     const settingsToUse = fetchedSettings ?? defaultSettings;
 
     if (!settingsToUse.tree) {
