@@ -87,24 +87,25 @@ export const useNFTAdminLogic = () => {
       console.error("Tree is undefined, using default");
       settingsToUse.tree = defaultSettings.tree;
     }
-    console.log("Setting savedConditionTree to:", settingsToUse.tree, typeof settingsToUse.tree);
-    setSavedConditionTree(settingsToUse.tree);
-    setKickMessage(settingsToUse.kickMessage);
+    const settingsJSON = JSON.parse(JSON.stringify(settingsToUse));
+    console.log("Setting savedConditionTree to:", settingsJSON.tree, typeof settingsJSON.tree);
+    setSavedConditionTree(settingsJSON.tree);
+    setKickMessage(settingsJSON.kickMessage);
 
-    const treeType = settingsToUse.tree.type as string | undefined;
+    const treeType = settingsJSON.tree.type as string | undefined;
     console.log("Tree type:", treeType);
-    console.log("Initializing editing states with:", settingsToUse.tree.type);
+    console.log("Initializing editing states with:", settingsJSON.tree.type);
     switch (treeType) {
       case "lock":
-        setEditingBasic(settingsToUse.tree as LockCondition);
+        setEditingBasic(settingsJSON.tree as LockCondition);
         setActiveTab("basic");
         break;
       case "group":
-        setEditingQuantity(settingsToUse.tree as LockGroup);
+        setEditingQuantity(settingsJSON.tree as LockGroup);
         setActiveTab("quantity");
         break;
       case "trait":
-        setEditingTraits(settingsToUse.tree as TraitCondition);
+        setEditingTraits(settingsJSON.tree as TraitCondition);
         setActiveTab("traits");
         break;
       default:
