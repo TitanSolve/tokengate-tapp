@@ -87,7 +87,7 @@ export const useNFTAdminLogic = () => {
       console.error("Tree is undefined, using default");
       settingsToUse.tree = defaultSettings.tree;
     }
-    console.log("Setting savedConditionTree to:", settingsToUse.tree);
+    console.log("Setting savedConditionTree to:", settingsToUse.tree, typeof settingsToUse.tree);
     setSavedConditionTree(settingsToUse.tree);
     setKickMessage(settingsToUse.kickMessage);
 
