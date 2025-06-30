@@ -92,6 +92,8 @@ export const useNFTAdminLogic = () => {
     setKickMessage(settingsToUse.kickMessage);
 
     const treeType = (settingsToUse.tree as any).type as string | undefined;
+    console.log("Tree type:", treeType);
+    console.log("Initializing editing states with:", settingsToUse.tree.type);
     switch (treeType) {
       case "lock":
         setEditingBasic(settingsToUse.tree as LockCondition);
