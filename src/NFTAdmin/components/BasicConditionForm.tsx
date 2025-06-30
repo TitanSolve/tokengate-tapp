@@ -41,7 +41,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
       nftCount !== condition.nftCount ||
       nftImageUrl !== condition.nftImageUrl;
     
-    console.log(`condition: ${condition}`);
+    console.log(`condition: ${condition.type}`);
 
     if (hasChanged) {
       onChange({
