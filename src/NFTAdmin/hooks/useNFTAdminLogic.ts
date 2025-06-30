@@ -295,6 +295,8 @@ export const useNFTAdminLogic = () => {
     //   secretKey
     // );
     console.log("trimming roomId:", trimmedRoomId);
+    const userId = widgetApi.widgetParameters.userId || "";
+    console.log("userId:", userId);
     try {
       const response = await fetch(`${apiUrl}/api/admin/saveSettings`, {
         method: "POST",
@@ -306,7 +308,7 @@ export const useNFTAdminLogic = () => {
           roomId: trimmedRoomId,
           conditionTree: treeToSave,
           accessToken: secretKey,
-          userId: widgetApi.widgetParameters.userId || "",
+          userId: userId,
           kickMessage: kickMessage,
         }),
       });
