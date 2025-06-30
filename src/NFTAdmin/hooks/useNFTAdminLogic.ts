@@ -49,7 +49,7 @@ export const useNFTAdminLogic = () => {
         {
           method: "GET",
           headers: {
-            "Authorization": "Bearer 1234567890QWERTYUIOP"
+            // Authorization: "Bearer 1234567890QWERTYUIOP",
           },
         }
       );
