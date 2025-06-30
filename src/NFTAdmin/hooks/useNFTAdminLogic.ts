@@ -177,6 +177,7 @@ export const useNFTAdminLogic = () => {
 
   const handleTreeChange = (updatedTree: ConditionTree) => {
     console.log("Handling tree change:", updatedTree);
+    console.log("EditingBasic before change:", editingBasic);
     setHasUnsavedChanges(true);
 
     switch (updatedTree.type) {
