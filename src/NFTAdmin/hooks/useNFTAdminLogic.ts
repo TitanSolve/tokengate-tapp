@@ -1,6 +1,6 @@
 // /NFTAdmin/hooks/useNFTAdminLogic.ts
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useWidgetApi } from "@matrix-widget-toolkit/react";
 import {
   ConditionTree,
@@ -64,7 +64,7 @@ export const useNFTAdminLogic = () => {
     }
   };
 
-  const initializeTree = async () => {
+  const initializeTree = useCallback(async () => {
     console.log("Starting initialization...");
     const defaultSettings: RoomSettings = {
       tree: {
@@ -111,9 +111,10 @@ export const useNFTAdminLogic = () => {
         setActiveTab("quantity");
         break;
     }
-  };
+  }, [widgetApi]);
 
   useEffect(() => {
+    console.log("Initializing NFT Admin Logic...");
     initializeTree();
 
     // Fetch room name for display
