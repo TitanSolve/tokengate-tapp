@@ -91,7 +91,7 @@ export const useNFTAdminLogic = () => {
     setSavedConditionTree(settingsToUse.tree);
     setKickMessage(settingsToUse.kickMessage);
 
-    const treeType = (settingsToUse.tree as any).type as string | undefined;
+    const treeType = settingsToUse.tree.type as string | undefined;
     console.log("Tree type:", treeType);
     console.log("Initializing editing states with:", settingsToUse.tree.type);
     switch (treeType) {
