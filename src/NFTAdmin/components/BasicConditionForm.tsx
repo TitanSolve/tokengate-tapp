@@ -34,24 +34,33 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
 
   // Effect to update parent component when values change
   useEffect(() => {
-    onChange({
-      ...condition,
-      issuer,
-      taxon,
-      nftCount,
-      nftImageUrl,
-    });
-  }, [issuer, taxon, nftCount, nftImageUrl, condition, onChange]);
+    // Only update if something actually changed
+    const hasChanged =
+      issuer !== condition.issuer ||
+      taxon !== condition.taxon ||
+      nftCount !== condition.nftCount ||
+      nftImageUrl !== condition.nftImageUrl;
+
+    if (hasChanged) {
+      onChange({
+        ...condition,
+        issuer,
+        taxon,
+        nftCount,
+        nftImageUrl,
+      });
+    }
+  }, [issuer, taxon, nftCount, nftImageUrl]);
 
   // Define the callback type for better type safety
   type ImageFetchCallback = (imageUrl: string | null, error: string | null) => void;
-  
+
   // Create a debounced version of the image fetching function that can be cancelled
   const debouncedFetchWithCancel = useCallback(() => {
     // Create the debounced function instance
     const debouncedFn = debounce(async (
-      issuerValue: string, 
-      taxonValue: string, 
+      issuerValue: string,
+      taxonValue: string,
       callback: ImageFetchCallback
     ) => {
       if (!issuerValue || !taxonValue) {
@@ -68,17 +77,17 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
         callback(null, 'Failed to fetch NFT image');
       }
     }, 10000); // 500ms debounce delay
-    
+
     // Add the cancel method that we'll use in cleanup
     return {
       fetch: debouncedFn,
       cancel: debouncedFn.cancel
     };
   }, []);
-  
+
   // Create a reference to the debounced function to ensure we always have the latest version
   const debouncedFnRef = useRef(debouncedFetchWithCancel());
-  
+
   // Update the reference when the dependency changes
   useEffect(() => {
     debouncedFnRef.current = debouncedFetchWithCancel();
@@ -152,31 +161,31 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
       setImageError('Please enter issuer and taxon first');
       return;
     }
-    
+
     setIsLoadingImage(true);
     setImageError(null);
-    
+
     try {
       // Use local proxy to avoid CORS issues
       const apiUrl = API_URLS.backendUrl //''; // Empty base URL will use the current origin with the proxy path
       const apiKey = '1234567890QWERTYUIOP';
-      
+
       // Log the request details
       console.log('🔍 DIRECT TEST: Starting API test');
       console.log(`🔍 DIRECT TEST: Issuer = ${issuer}`);
       console.log(`🔍 DIRECT TEST: Taxon = ${taxon}`);
-      
+
       const requestBody = {
         issuer: encodeURIComponent(issuer),
         taxon: encodeURIComponent(taxon),
       };
       const url = `${apiUrl}/api/nfts/image-only`;
       console.log(`🔍 DIRECT TEST: URL = ${url}`);
-      
+
       // Make a fetch request directly
       const startTime = Date.now();
       console.log('🔍 DIRECT TEST: Sending request...');
-      
+
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -186,22 +195,22 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
         },
         body: JSON.stringify(requestBody),
       });
-      
+
       const endTime = Date.now();
       console.log(`🔍 DIRECT TEST: Response received in ${endTime - startTime}ms`);
       console.log(`🔍 DIRECT TEST: Status = ${response.status} ${response.statusText}`);
-      
+
       if (!response.ok) {
         throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
       }
-      
+
       const data = await response.json();
       console.log('🔍 DIRECT TEST: Response data:', data);
-      
+
       if (!data.imageUrl) {
         throw new Error('No image URL in response');
       }
-      
+
       setNftImageUrl(data.imageUrl);
       console.log(`🔍 DIRECT TEST: Image URL = ${data.imageUrl}`);
       setImageError(null);
@@ -331,7 +340,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
             <Typography variant="subtitle2" gutterBottom>
               NFT Image Preview
             </Typography>
-            
+
             {isLoadingImage ? (
               <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 200, width: 200, bgcolor: 'rgba(0,0,0,0.04)' }}>
                 <CircularProgress size={40} />
@@ -347,13 +356,13 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
                 />
               </Card>
             ) : (
-              <Box 
-                sx={{ 
-                  height: 200, 
-                  width: 200, 
-                  bgcolor: 'rgba(0,0,0,0.04)', 
-                  display: 'flex', 
-                  justifyContent: 'center', 
+              <Box
+                sx={{
+                  height: 200,
+                  width: 200,
+                  bgcolor: 'rgba(0,0,0,0.04)',
+                  display: 'flex',
+                  justifyContent: 'center',
                   alignItems: 'center',
                   border: '1px dashed rgba(0,0,0,0.2)',
                   flexDirection: 'column',
@@ -370,7 +379,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
                 </Typography>
               </Box>
             )}
-            
+
             <Typography variant="caption" color="textSecondary" sx={{ display: 'block', mt: 1 }}>
               Auto-fetching image based on issuer/taxon
             </Typography>
