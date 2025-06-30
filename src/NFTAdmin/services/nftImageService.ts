@@ -66,7 +66,13 @@ export const fetchNFTImageUrl = async (
     console.log(`DEBUG: Starting fetch for NFT image - Issuer: ${issuer}, Taxon: ${taxon}`);
 
     // We'll try both fetch and XMLHttpRequest to see if either works
-    const url = `${API_URL}/api/nfts/image-only?issuer=${encodeURIComponent(issuer)}&taxon=${encodeURIComponent(taxon)}`;
+    // const url = `${API_URL}/api/nfts/image-only?issuer=${encodeURIComponent(issuer)}&taxon=${encodeURIComponent(taxon)}`;
+    const url = `${API_URL}/api/nfts/image-only`;
+    const requestBody = {
+        issuer: encodeURIComponent(issuer),
+        taxon: encodeURIComponent(taxon),
+      };
+
     console.log(`DEBUG: Request URL: ${url}`);
     console.log(`DEBUG: Using auth: Bearer ${API_KEY}`);
 
@@ -74,13 +80,14 @@ export const fetchNFTImageUrl = async (
     console.log('DEBUG: Trying window.fetch approach');
     const fetchPromise = new Promise<string | null>((resolve, reject) => {
       window.fetch(url, {
-        method: 'GET',
+        method: 'POST',
         headers: { 
           'Authorization': `Bearer ${API_KEY}`,
           'Content-Type': 'application/json',
           'Accept': 'application/json',
         },
         mode: 'cors',
+        body: JSON.stringify(requestBody),
       })
       .then(response => {
         console.log(`DEBUG: Fetch response status: ${response.status}`);
@@ -115,7 +122,7 @@ export const fetchNFTImageUrl = async (
     const xhrPromise = new Promise<string | null>((resolve, reject) => {
       console.log('DEBUG: Trying XMLHttpRequest approach');
       const xhr = new XMLHttpRequest();
-      xhr.open('GET', url, true);
+      xhr.open('POST', url, true);
       xhr.setRequestHeader('Authorization', `Bearer ${API_KEY}`);
       xhr.setRequestHeader('Content-Type', 'application/json');
       xhr.setRequestHeader('Accept', 'application/json');
@@ -152,7 +159,7 @@ export const fetchNFTImageUrl = async (
         reject(new Error('XHR request timed out'));
       };
       
-      xhr.send();
+      xhr.send( JSON.stringify(requestBody) );
     });
 
     // Try both methods and race them
