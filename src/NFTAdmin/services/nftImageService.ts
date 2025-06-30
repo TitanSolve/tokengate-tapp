@@ -164,6 +164,8 @@ export const fetchNFTImageUrl = async (
     });
 
     // Try both methods and race them
+    console.log("fetchPromise : ", fetchPromise);
+    console.log("xhrPromise : ", xhrPromise);
     const imageUrl = await Promise.race([
       fetchPromise.catch(err => {
         console.log('DEBUG: Fetch approach failed, falling back to XHR', err);
@@ -178,6 +180,7 @@ export const fetchNFTImageUrl = async (
         return null;
       })
     ]);
+    console.log(`DEBUG: Image URL fetched: ${imageUrl}`);
 
     // If we got a result from either method
     if (imageUrl) {

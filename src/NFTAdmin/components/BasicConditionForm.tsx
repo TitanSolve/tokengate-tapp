@@ -14,6 +14,7 @@ import {
 import { LockCondition } from '../types';
 import { fetchNFTImageUrl } from '../services/nftImageService';
 import debounce from 'lodash.debounce';
+import API_URLS from '@/config';
 
 interface BasicConditionFormProps {
   condition: LockCondition;
@@ -157,7 +158,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
     
     try {
       // Use local proxy to avoid CORS issues
-      const apiUrl = ''; // Empty base URL will use the current origin with the proxy path
+      const apiUrl = API_URLS.backendUrl //''; // Empty base URL will use the current origin with the proxy path
       const apiKey = '1234567890QWERTYUIOP';
       
       // Log the request details
