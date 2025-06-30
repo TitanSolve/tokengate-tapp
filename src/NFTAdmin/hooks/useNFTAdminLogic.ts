@@ -264,6 +264,7 @@ export const useNFTAdminLogic = () => {
 
   const saveConditionTree = async () => {
     const rawRoomId = widgetApi.widgetParameters.roomId;
+    console.log("saveConditionTree called with roomId:", rawRoomId);
     if (!rawRoomId) {
       setSaveError("Room ID not found");
       return;
@@ -295,7 +296,7 @@ export const useNFTAdminLogic = () => {
     );
 
     try {
-      const response = await fetch(`${apiUrl}/api/admin/settings`, {
+      const response = await fetch(`${apiUrl}/api/admin/saveSettings`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

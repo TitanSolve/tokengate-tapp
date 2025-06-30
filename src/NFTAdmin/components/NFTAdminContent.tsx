@@ -14,7 +14,7 @@ import {
 import { ConditionTree, LockCondition, TraitCondition } from '../types';
 import { BasicConditionForm } from './BasicConditionForm.js';
 import { QuantityConditionEditor } from './QuantityConditionEditor.js';
-// import { TraitsConditionEditor } from './TraitsConditionEditor.js';
+import { TraitsConditionEditor } from './TraitsConditionEditor.js';
 
 interface NFTAdminContentProps {
   conditionTree: ConditionTree;
@@ -46,7 +46,7 @@ export const NFTAdminContent: React.FC<NFTAdminContentProps> = ({
   initialTab,
   editingBasic,
   editingQuantity,
-  // editingTraits,
+  editingTraits,
   onKickMessageChange,
   onTreeChange,
   onSave,
@@ -132,8 +132,6 @@ export const NFTAdminContent: React.FC<NFTAdminContentProps> = ({
               />
             )}
           </Box>
-
-{/*
           <Box role="tabpanel" hidden={currentTab !== 'traits'} sx={{ py: 3 }}>
             {currentTab === 'traits' && (
               <TraitsConditionEditor
@@ -141,7 +139,7 @@ export const NFTAdminContent: React.FC<NFTAdminContentProps> = ({
                 onChange={onTreeChange}
               />
             )}
-          </Box> */}
+          </Box>
         </Box>
 
         <Divider sx={{ my: 3 }} />
