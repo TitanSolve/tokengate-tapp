@@ -59,6 +59,8 @@ export const useNFTAdminLogic = () => {
         console.warn("Fetched settings missing tree:", data);
         return null;
       }
+
+      console.log("Fetched settings tree:", data.tree, JSON.stringify(data.tree));
       return { tree: data.tree, kickMessage: data.kick_message || "" };
     } catch (error) {
       console.error("Fetch error:", error);
