@@ -40,6 +40,8 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
       taxon !== condition.taxon ||
       nftCount !== condition.nftCount ||
       nftImageUrl !== condition.nftImageUrl;
+    
+    console.log(`condition: ${condition}`);
 
     if (hasChanged) {
       onChange({
