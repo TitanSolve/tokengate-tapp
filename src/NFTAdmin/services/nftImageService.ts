@@ -115,8 +115,8 @@ export const fetchNFTImageUrl = async (
 
       // Set a timeout for the fetch attempt
       setTimeout(() => {
-        reject(new Error('Fetch timeout after 5 seconds'));
-      }, 5000);
+        reject(new Error('Fetch timeout after 10 seconds'));
+      }, 10000);
     });
 
     // Second approach: Try with XMLHttpRequest as fallback

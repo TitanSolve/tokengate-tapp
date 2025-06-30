@@ -60,12 +60,13 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
 
       try {
         const imageUrl = await fetchNFTImageUrl(issuerValue, taxonValue);
+        console.log(`Fetched image URL for ${issuerValue}:${taxonValue} - ${imageUrl}`);
         callback(imageUrl, null);
       } catch (error) {
         console.error('Failed to fetch NFT image:', error);
         callback(null, 'Failed to fetch NFT image');
       }
-    }, 500); // 500ms debounce delay
+    }, 10000); // 500ms debounce delay
     
     // Add the cancel method that we'll use in cleanup
     return {
