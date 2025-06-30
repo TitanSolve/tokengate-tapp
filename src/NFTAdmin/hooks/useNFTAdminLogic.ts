@@ -88,7 +88,7 @@ export const useNFTAdminLogic = () => {
       settingsToUse.tree = defaultSettings.tree;
     }
 
-    const settingsToUseString: string = String(settingsToUse);
+    const settingsToUseString: string = String(settingsToUse.tree);
     const settingsJSON = JSON.parse(settingsToUseString);
     console.log("Setting savedConditionTree to:", settingsJSON, typeof settingsJSON);
     setSavedConditionTree(settingsJSON);
