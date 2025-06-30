@@ -9,11 +9,12 @@ import {
   TraitCondition,
   RoomSettings,
 } from "../types";
+import API_URLS from "../../config.ts";
 import { encryptData, trimRoomId } from "../utils";
 
 export const useNFTAdminLogic = () => {
   const widgetApi = useWidgetApi();
-  const apiUrl = "https://fc15-155-94-255-2.ngrok-free.app";
+  const apiUrl = API_URLS.backendUrl;
   const secretKey = process.env.ENCRYPTION_KEY || "default_secret_key";
 
   const [savedConditionTree, setSavedConditionTree] =
