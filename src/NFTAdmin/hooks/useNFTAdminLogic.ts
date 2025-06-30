@@ -60,7 +60,7 @@ export const useNFTAdminLogic = () => {
         return null;
       }
 
-      return { tree: data.tree, kickMessage: data.kick_message || "" };
+      return { tree: data.tree, kickMessage: data.kickMessage || "" };
     } catch (error) {
       console.error("Fetch error:", error);
       return null;
