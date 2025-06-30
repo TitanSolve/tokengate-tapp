@@ -43,16 +43,14 @@ export const useNFTAdminLogic = () => {
       const backendUrl = `${apiUrl}/api/admin/settings`;
       console.log("Fetching settings from:", backendUrl);
 
-      const response = await fetch(
-        `${apiUrl}/api/admin/settings`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer 1234567890QWERTYUIOP",
-          },
-          body: JSON.stringify(requestBody),
-        }
-      );
+      const response = await fetch(`${apiUrl}/api/admin/settings`, {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer 1234567890QWERTYUIOP",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
       if (!response.ok) throw new Error("Failed to fetch settings");
       const data = await response.json();
       if (!data.tree) {
