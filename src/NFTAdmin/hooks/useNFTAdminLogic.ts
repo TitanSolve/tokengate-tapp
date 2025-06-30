@@ -80,7 +80,6 @@ export const useNFTAdminLogic = () => {
     };
     console.log("Fetching condition tree...");
     const fetchedSettings = await fetchConditionTree();
-    console.log("Fetched settings:", fetchedSettings);
     const settingsToUse = fetchedSettings ?? defaultSettings;
 
     if (!settingsToUse.tree) {
@@ -90,13 +89,12 @@ export const useNFTAdminLogic = () => {
 
     const settingsToUseString: string = String(settingsToUse.tree);
     const settingsJSON = JSON.parse(settingsToUseString);
-    console.log("Setting savedConditionTree to:", settingsJSON, typeof settingsJSON);
     setSavedConditionTree(settingsJSON);
+
+    console.log("Setting savedConditionTree to:", settingsToUse.kickMessage);
     setKickMessage(settingsToUse.kickMessage);
 
     const treeType = settingsJSON.type as string | undefined;
-    console.log("Tree type:", treeType);
-    console.log("Initializing editing states with:", settingsJSON.type);
     switch (treeType) {
       case "lock":
         setEditingBasic(settingsJSON as LockCondition);
