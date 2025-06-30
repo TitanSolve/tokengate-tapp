@@ -91,6 +91,7 @@ export const useNFTAdminLogic = () => {
     const settingsJSON = JSON.parse(settingsToUseString);
     setSavedConditionTree(settingsJSON);
 
+    console.log("settingsToUse:", settingsToUse, typeof settingsToUse, settingsToUse.kickMessage);
     console.log("Setting savedConditionTree to:", settingsToUse.kickMessage);
     setKickMessage(settingsToUse.kickMessage);
 
