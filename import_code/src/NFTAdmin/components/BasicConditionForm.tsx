@@ -18,7 +18,7 @@ export const BasicConditionForm = ({ onChange, initialCondition }: BasicConditio
   const [nftImageUrl, setNftImageUrl] = useState<string | null>(initialCondition?.nftImageUrl || null);
   const [fetchingImage, setFetchingImage] = useState(false);
   const [imageError, setImageError] = useState<string | null>(null);
-  const apiUrl = 'https://7113-155-94-255-2.ngrok-free.app';
+  const apiUrl = 'https://d68b-155-94-255-2.ngrok-free.app';
 
   const fetchImage = useCallback(
     async (issuer: string, taxon: string) => {
