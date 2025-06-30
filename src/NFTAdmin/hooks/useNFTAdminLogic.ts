@@ -287,14 +287,14 @@ export const useNFTAdminLogic = () => {
     }
 
     const trimmedRoomId = trimRoomId(rawRoomId);
-    const encryptedSettings = encryptData(
-      JSON.stringify({
-        tree: treeToSave,
-        kick_message: kickMessage,
-      }),
-      secretKey
-    );
-
+    // const encryptedSettings = encryptData(
+    //   JSON.stringify({
+    //     tree: treeToSave,
+    //     kick_message: kickMessage,
+    //   }),
+    //   secretKey
+    // );
+    console.log("trimming roomId:", trimmedRoomId);
     try {
       const response = await fetch(`${apiUrl}/api/admin/saveSettings`, {
         method: "POST",
@@ -304,7 +304,10 @@ export const useNFTAdminLogic = () => {
         },
         body: JSON.stringify({
           roomId: trimmedRoomId,
-          settings: encryptedSettings,
+          conditionTree: treeToSave,
+          accessToken: secretKey,
+          userId: widgetApi.widgetParameters.userId || "",
+          kickMessage: kickMessage,
         }),
       });
 
