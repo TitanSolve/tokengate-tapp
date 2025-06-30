@@ -10,7 +10,7 @@ import {
   RoomSettings,
 } from "../types";
 import API_URLS from "../../config.ts";
-import { encryptData, trimRoomId } from "../utils";
+// import { encryptData, trimRoomId } from "../utils";
 
 export const useNFTAdminLogic = () => {
   const widgetApi = useWidgetApi();
