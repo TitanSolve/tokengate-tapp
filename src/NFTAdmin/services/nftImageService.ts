@@ -171,7 +171,7 @@ export const fetchNFTImageUrl = async (
         console.log('DEBUG: Fetch approach failed, falling back to XHR', err);
         // Log CORS issues specifically
         if (err instanceof TypeError && err.message.includes('network')) {
-          console.error('DEBUG: This appears to be a CORS or network error');
+          console.error('DEBUG: This appears to be a CORS or networ11k error');
         }
         return null;
       }),
