@@ -36,10 +36,10 @@ export const useNFTAdminLogic = () => {
   const fetchConditionTree = async (): Promise<RoomSettings | null> => {
     const rawRoomId = widgetApi.widgetParameters.roomId;
     if (!rawRoomId) return null;
-    const trimmedRoomId = trimRoomId(rawRoomId);
+    // const trimmedRoomId = trimRoomId(rawRoomId);
     try {
       const requestBody = {
-        roomId: encodeURIComponent(trimmedRoomId),
+        roomId: encodeURIComponent(rawRoomId),
       };
       const backendUrl = `${apiUrl}/api/admin/settings`;
       console.log("Fetching settings from:", backendUrl);
