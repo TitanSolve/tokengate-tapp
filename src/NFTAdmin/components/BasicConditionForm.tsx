@@ -41,7 +41,9 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
       nftCount !== condition.nftCount ||
       nftImageUrl !== condition.nftImageUrl;
     
+    console.log('condition:', condition, typeof condition);
     let conditionBasic = condition as LockCondition;
+    console.log('conditionBasic:', conditionBasic, typeof conditionBasic);
     conditionBasic.type = 'lock';
 
     if (hasChanged) {

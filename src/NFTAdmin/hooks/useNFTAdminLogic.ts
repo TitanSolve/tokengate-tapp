@@ -10,7 +10,7 @@ import {
   RoomSettings,
 } from "../types";
 import API_URLS from "../../config.ts";
-// import { trimRoomId } from "../utils";
+import { trimRoomId } from "../utils";
 
 export const useNFTAdminLogic = () => {
   const widgetApi = useWidgetApi();
@@ -36,10 +36,10 @@ export const useNFTAdminLogic = () => {
   const fetchConditionTree = async (): Promise<RoomSettings | null> => {
     const rawRoomId = widgetApi.widgetParameters.roomId;
     if (!rawRoomId) return null;
-    // const trimmedRoomId = trimRoomId(rawRoomId);
+    const trimmedRoomId = trimRoomId(rawRoomId);
     try {
       const requestBody = {
-        roomId: encodeURIComponent(rawRoomId),
+        roomId: encodeURIComponent(trimmedRoomId),
       };
       const backendUrl = `${apiUrl}/api/admin/settings`;
       console.log("Fetching settings from:", backendUrl);
@@ -302,7 +302,7 @@ export const useNFTAdminLogic = () => {
         return;
     }
 
-    // const trimmedRoomId = trimRoomId(rawRoomId);
+    const trimmedRoomId = trimRoomId(rawRoomId);
     // const encryptedSettings = encryptData(
     //   JSON.stringify({
     //     tree: treeToSave,
@@ -314,7 +314,7 @@ export const useNFTAdminLogic = () => {
     const userId = widgetApi.widgetParameters.userId || "";
     console.log("userId:", userId);
     const requestBody = {
-      roomId: rawRoomId,
+      roomId: trimmedRoomId,
       conditionTree: treeToSave,
       accessToken: secretKey,
       userId: userId,
