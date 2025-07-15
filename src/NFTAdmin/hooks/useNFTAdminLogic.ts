@@ -103,6 +103,7 @@ export const useNFTAdminLogic = () => {
       const treeType = settingsJSON.type as string | undefined;
       switch (treeType) {
         case "lock":
+          console.log("Initializing basic condition form with:", settingsJSON);
           setEditingBasic(settingsJSON as LockCondition);
           setActiveTab("basic");
           break;
