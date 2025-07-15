@@ -68,56 +68,62 @@ export const useNFTAdminLogic = () => {
   };
 
   const initializeTree = useCallback(async () => {
-    console.log("Starting initialization...");
-    const defaultSettings: RoomSettings = {
-      tree: {
-        type: "group",
-        id: `group-${Date.now()}`,
-        operator: "AND",
-        children: [],
-      },
-      kickMessage: "",
-    };
-    console.log("Fetching condition tree...");
-    const fetchedSettings = await fetchConditionTree();
-    console.log("Fetched settings:", fetchedSettings);
-    const settingsToUse = fetchedSettings ?? defaultSettings;
+    try{
+      console.log("Starting initialization...");
+      const defaultSettings: RoomSettings = {
+        tree: {
+          type: "group",
+          id: `group-${Date.now()}`,
+          operator: "AND",
+          children: [],
+        },
+        kickMessage: "",
+      };
+      console.log("Fetching condition tree...");
+      const fetchedSettings = await fetchConditionTree();
+      console.log("Fetched settings:", fetchedSettings);
+      const settingsToUse = fetchedSettings ?? defaultSettings;
 
-    if (!settingsToUse.tree) {
-      console.error("Tree is undefined, using default");
-      settingsToUse.tree = defaultSettings.tree;
-    }
+      if (!settingsToUse.tree) {
+        console.error("Tree is undefined, using default");
+        settingsToUse.tree = defaultSettings.tree;
+      }
 
-    const settingsToUseString: string = String(settingsToUse.tree);
-    const settingsJSON = JSON.parse(settingsToUseString);
-    setSavedConditionTree(settingsJSON);
+      console.log("Using settings:", settingsToUse, settingsToUse.tree);
+      const settingsToUseString: string = String(settingsToUse.tree);
+      console.log("settingsToUseString:", settingsToUseString, typeof settingsToUseString);      
+      const settingsJSON = JSON.parse(settingsToUseString);
+      setSavedConditionTree(settingsJSON);
 
-    console.log("settingsToUse:", settingsToUse, typeof settingsToUse, settingsToUse.kickMessage);
-    console.log("Setting savedConditionTree to:", settingsToUse.kickMessage);
-    setKickMessage(settingsToUse.kickMessage);
+      console.log("settingsToUse:", settingsToUse, typeof settingsToUse, settingsToUse.kickMessage);
+      console.log("Setting savedConditionTree to:", settingsToUse.kickMessage);
+      setKickMessage(settingsToUse.kickMessage);
 
-    const treeType = settingsJSON.type as string | undefined;
-    switch (treeType) {
-      case "lock":
-        setEditingBasic(settingsJSON as LockCondition);
-        setActiveTab("basic");
-        break;
-      case "group":
-        setEditingQuantity(settingsJSON as LockGroup);
-        setActiveTab("quantity");
-        break;
-      case "trait":
-        setEditingTraits(settingsJSON as TraitCondition);
-        setActiveTab("traits");
-        break;
-      default:
-        console.warn(
-          "Unknown condition type, defaulting to quantity:",
-          treeType
-        );
-        setEditingQuantity(defaultSettings.tree);
-        setActiveTab("quantity");
-        break;
+      const treeType = settingsJSON.type as string | undefined;
+      switch (treeType) {
+        case "lock":
+          setEditingBasic(settingsJSON as LockCondition);
+          setActiveTab("basic");
+          break;
+        case "group":
+          setEditingQuantity(settingsJSON as LockGroup);
+          setActiveTab("quantity");
+          break;
+        case "trait":
+          setEditingTraits(settingsJSON as TraitCondition);
+          setActiveTab("traits");
+          break;
+        default:
+          console.warn(
+            "Unknown condition type, defaulting to quantity:",
+            treeType
+          );
+          setEditingQuantity(defaultSettings.tree);
+          setActiveTab("quantity");
+          break;
+      }
+    } catch (error) {
+      console.error("Error initializing tree:", error);
     }
   }, [widgetApi]);
 
