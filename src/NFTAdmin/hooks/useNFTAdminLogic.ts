@@ -101,6 +101,7 @@ export const useNFTAdminLogic = () => {
       setKickMessage(settingsToUse.kickMessage);
 
       const treeType = settingsJSON.type as string | undefined;
+      console.log("Tree type:", treeType, typeof treeType);
       switch (treeType) {
         case "lock":
           console.log("Initializing basic condition form with:", settingsJSON);
