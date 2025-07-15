@@ -94,25 +94,28 @@ export const useNFTAdminLogic = () => {
       // console.log("settingsToUseString:", settingsToUseString, typeof settingsToUseString);      
       const settingsJSON = settingsToUse.tree;
       console.log("settingsJSON:", settingsJSON, typeof settingsJSON);
+      let treeType: string | undefined = "";
       if( typeof settingsJSON === 'string') {
         try {
           console.log("Parsing settingsJSON as JSON");
           const parsedSettings = JSON.parse(settingsJSON);
           console.log("Parsed settings:", parsedSettings);
           setSavedConditionTree(parsedSettings);
+          treeType = parsedSettings.type as string | undefined;
         } catch (error) {
           console.error("Error parsing settingsJSON as JSON:", error);
         }
       }
       else if (typeof settingsJSON === 'object') {
         setSavedConditionTree(settingsJSON);
+        treeType = settingsJSON.type as string | undefined;
       }
 
       console.log("settingsToUse:", settingsToUse, typeof settingsToUse, settingsToUse.kickMessage);
       console.log("Setting savedConditionTree to:", settingsToUse.kickMessage);
       setKickMessage(settingsToUse.kickMessage);
 
-      const treeType = settingsJSON.type as string | undefined;
+      
       console.log("Tree type:", treeType, typeof treeType);
       switch (treeType) {
         case "lock":
