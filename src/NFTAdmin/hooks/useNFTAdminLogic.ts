@@ -99,7 +99,7 @@ export const useNFTAdminLogic = () => {
         try {
           console.log("Parsing settingsJSON as JSON");
           const parsedSettings = JSON.parse(settingsJSON);
-          console.log("Parsed settings:", parsedSettings);
+          console.log("Parsed settings:", parsedSettings, typeof parsedSettings);
           setSavedConditionTree(parsedSettings);
           treeType = parsedSettings.type as string | undefined;
         } catch (error) {
@@ -119,7 +119,7 @@ export const useNFTAdminLogic = () => {
       console.log("Tree type:", treeType, typeof treeType);
       switch (treeType) {
         case "lock":
-          console.log("Initializing basic condition form with:", settingsJSON);
+          console.log("Initializing basic condition form with:", settingsJSON, typeof settingsJSON);
           if( typeof settingsJSON === 'string') {
             const parsedSettings = JSON.parse(settingsJSON);
             setEditingBasic(parsedSettings as LockCondition);
