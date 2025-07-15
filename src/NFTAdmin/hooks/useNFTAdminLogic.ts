@@ -94,7 +94,19 @@ export const useNFTAdminLogic = () => {
       // console.log("settingsToUseString:", settingsToUseString, typeof settingsToUseString);      
       const settingsJSON = settingsToUse.tree;
       console.log("settingsJSON:", settingsJSON, typeof settingsJSON);
-      setSavedConditionTree(settingsJSON);
+      if( typeof settingsJSON === 'string') {
+        try {
+          console.log("Parsing settingsJSON as JSON");
+          const parsedSettings = JSON.parse(settingsJSON);
+          console.log("Parsed settings:", parsedSettings);
+          setSavedConditionTree(parsedSettings);
+        } catch (error) {
+          console.error("Error parsing settingsJSON as JSON:", error);
+        }
+      }
+      else if (typeof settingsJSON === 'object') {
+        setSavedConditionTree(settingsJSON);
+      }
 
       console.log("settingsToUse:", settingsToUse, typeof settingsToUse, settingsToUse.kickMessage);
       console.log("Setting savedConditionTree to:", settingsToUse.kickMessage);
