@@ -10,7 +10,7 @@ import {
   RoomSettings,
 } from "../types";
 import API_URLS from "../../config.ts";
-import { trimRoomId } from "../utils";
+// import { trimRoomId } from "../utils";
 
 export const useNFTAdminLogic = () => {
   const widgetApi = useWidgetApi();
@@ -295,7 +295,7 @@ export const useNFTAdminLogic = () => {
         return;
     }
 
-    const trimmedRoomId = trimRoomId(rawRoomId);
+    // const trimmedRoomId = trimRoomId(rawRoomId);
     // const encryptedSettings = encryptData(
     //   JSON.stringify({
     //     tree: treeToSave,
@@ -303,11 +303,11 @@ export const useNFTAdminLogic = () => {
     //   }),
     //   secretKey
     // );
-    console.log("trimming roomId:", trimmedRoomId);
+    // console.log("trimming roomId:", trimmedRoomId);
     const userId = widgetApi.widgetParameters.userId || "";
     console.log("userId:", userId);
     const requestBody = {
-      roomId: trimmedRoomId,
+      roomId: rawRoomId,
       conditionTree: treeToSave,
       accessToken: secretKey,
       userId: userId,
