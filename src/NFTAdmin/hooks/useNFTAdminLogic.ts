@@ -90,9 +90,10 @@ export const useNFTAdminLogic = () => {
       }
 
       console.log("Using settings:", settingsToUse, settingsToUse.tree);
-      const settingsToUseString: string = String(settingsToUse.tree);
-      console.log("settingsToUseString:", settingsToUseString, typeof settingsToUseString);      
-      const settingsJSON = JSON.parse(settingsToUseString);
+      // const settingsToUseString: string = String(settingsToUse.tree);
+      // console.log("settingsToUseString:", settingsToUseString, typeof settingsToUseString);      
+      const settingsJSON = settingsToUse.tree;
+      console.log("settingsJSON:", settingsJSON, typeof settingsJSON);
       setSavedConditionTree(settingsJSON);
 
       console.log("settingsToUse:", settingsToUse, typeof settingsToUse, settingsToUse.kickMessage);
