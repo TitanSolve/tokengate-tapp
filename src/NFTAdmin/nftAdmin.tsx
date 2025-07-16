@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useWidgetApi } from "@matrix-widget-toolkit/react";
 import { useNFTAdminLogic } from './hooks/useNFTAdminLogic';
 import { NFTAdminContent } from './components/NFTAdminContent.js';
 import { describeConditionTree } from './utils';
 import { Typography } from '@mui/material';
 import { ConditionTree } from './types';
-import { l } from 'node_modules/vite/dist/node/types.d-aGj9QkWt.js';
+// import { l } from 'node_modules/vite/dist/node/types.d-aGj9QkWt.js';
 
 export const NFTAdmin = () => {
   const {
