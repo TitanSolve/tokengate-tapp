@@ -32,8 +32,9 @@ export const NFTAdmin = () => {
   useEffect(() => {
     //The user who has power_level > 100 can only access this Widget
     const loadData = async () => {
-      console.log(`widgetparameter---> ${widgetApi.widgetParameters}`);
+      console.log('widgetparameter--->', widgetApi.widgetParameters);
       const powerLevelsEvent = await widgetApi.receiveStateEvents('m.room.power_levels');
+      console.log('Power levels event:', powerLevelsEvent);
       if (powerLevelsEvent) {
         interface User {
           name: string;
