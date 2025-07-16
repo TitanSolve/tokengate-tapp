@@ -14,12 +14,12 @@ interface AppProps {
 
 function App({ widgetApiPromise }: AppProps) {
   const [checkedPowerLevels, setCheckedPowerLevels] = useState(0);
+  const widgetApi = useWidgetApi();
 
   useEffect(() => {
     //The user who has power_level > 100 can only access this Widget
     const loadData = async () => {
-      try {
-        const widgetApi = useWidgetApi();
+      try {        
         console.log('widgetparameter--->', widgetApi.widgetParameters, widgetApi.widgetParameters.userId);
         const events = await widgetApi.receiveStateEvents(
           STATE_EVENT_ROOM_MEMBER
@@ -65,7 +65,7 @@ function App({ widgetApiPromise }: AppProps) {
     }
 
     loadData();
-  }, []);
+  }, [widgetApi]);
 
   return (
     <BrowserRouter>
