@@ -37,11 +37,13 @@ export const NFTAdmin = () => {
         });
         console.log('Matrix client created:', matrixClient);
 
-        // const currentPowerLevels = await matrixClient.getStateEvent(
-        //   roomId,
-        //   "m.room.power_levels",
-        //   ""
-        // );
+        const roomId = widgetApi.widgetParameters.roomId || '';
+        const currentPowerLevels = await matrixClient.getStateEvent(
+          roomId,
+          "m.room.power_levels",
+          ""
+        );
+        console.log('Current power levels:', currentPowerLevels);
 
 
         if (powerLevelsEvent) {
