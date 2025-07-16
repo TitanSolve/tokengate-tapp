@@ -7,6 +7,8 @@ import { Typography } from '@mui/material';
 import { ConditionTree } from './types';
 import { STATE_EVENT_ROOM_MEMBER, STATE_EVENT_POWER_LEVELS } from "@matrix-widget-toolkit/api";
 import { Loader2 } from "lucide-react";
+import sdk from "matrix-js-sdk";
+import API_URLS from "../config.ts";
 // import { l } from 'node_modules/vite/dist/node/types.d-aGj9QkWt.js';
 
 export const NFTAdmin = () => {
@@ -24,6 +26,24 @@ export const NFTAdmin = () => {
         console.log("room.events : ", events);
         const powerLevelsEvent = await widgetApi.receiveStateEvents(STATE_EVENT_POWER_LEVELS);
         console.log('Power levels event:', powerLevelsEvent);
+
+        const accessToken = API_URLS.accesstoken || "1234567890QWERTYUIOP";
+        const userId = API_URLS.synapseUserId || "@tokengatebot:synapse.textrp.io";
+        const baseUrl: string = API_URLS.synapseUrl || "http://localhost:8008";
+        const matrixClient = sdk.createClient({
+          baseUrl,
+          accessToken,
+          userId
+        });
+        console.log('Matrix client created:', matrixClient);
+
+        // const currentPowerLevels = await matrixClient.getStateEvent(
+        //   roomId,
+        //   "m.room.power_levels",
+        //   ""
+        // );
+
+
         if (powerLevelsEvent) {
           interface User {
             name: string;
