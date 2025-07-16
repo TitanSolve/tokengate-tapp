@@ -5,7 +5,7 @@ import { NFTAdminContent } from './components/NFTAdminContent.js';
 import { describeConditionTree } from './utils';
 import { Typography } from '@mui/material';
 import { ConditionTree } from './types';
-import { STATE_EVENT_ROOM_MEMBER, STATE_EVENT_POWER_LEVELS } from "@matrix-widget-toolkit/api";
+// import { STATE_EVENT_ROOM_MEMBER, STATE_EVENT_POWER_LEVELS } from "@matrix-widget-toolkit/api";
 import { Loader2 } from "lucide-react";
 import * as sdk from "matrix-js-sdk";
 import API_URLS from "../config.ts";
@@ -46,36 +46,36 @@ export const NFTAdmin = () => {
         console.log('Current power levels:', currentPowerLevels);
 
 
-        if (powerLevelsEvent) {
-          interface User {
-            name: string;
-            userId: string;
-            powerLevel?: number; // optional since we are adding it later
-          }
+        // if (powerLevelsEvent) {
+        //   interface User {
+        //     name: string;
+        //     userId: string;
+        //     powerLevel?: number; // optional since we are adding it later
+        //   }
 
-          interface PowerLevelsEvent {
-            content: {
-              users: Record<string, number>; // Map userId to power level
-            };
-          }
-          const powerLevelsEvent: PowerLevelsEvent[] = await widgetApi.receiveStateEvents('m.room.power_levels');
+        //   interface PowerLevelsEvent {
+        //     content: {
+        //       users: Record<string, number>; // Map userId to power level
+        //     };
+        //   }
+        //   const powerLevelsEvent: PowerLevelsEvent[] = await widgetApi.receiveStateEvents('m.room.power_levels');
 
-          if (powerLevelsEvent && powerLevelsEvent[0]) {
-            const powerLevels = powerLevelsEvent[0]?.content?.users || {};
-            console.log('Power levels:', powerLevels);
+        //   if (powerLevelsEvent && powerLevelsEvent[0]) {
+        //     const powerLevels = powerLevelsEvent[0]?.content?.users || {};
+        //     console.log('Power levels:', powerLevels);
 
-            // Assuming usersList is available and is an array of User objects
-            const usersList: User[] = []; // Replace this with your actual usersList data
-            // Now, map users to their power levels
-            const usersWithPowerLevels = usersList.map((user) => {
-              // Get the user's power level, default to 0 if not found
-              const powerLevel = powerLevels[user.userId] || 0;
-              return { ...user, powerLevel };
-            });
+        //     // Assuming usersList is available and is an array of User objects
+        //     const usersList: User[] = []; // Replace this with your actual usersList data
+        //     // Now, map users to their power levels
+        //     const usersWithPowerLevels = usersList.map((user) => {
+        //       // Get the user's power level, default to 0 if not found
+        //       const powerLevel = powerLevels[user.userId] || 0;
+        //       return { ...user, powerLevel };
+        //     });
 
-            console.log('Users with power levels:', usersWithPowerLevels);
-          }
-        }
+        //     console.log('Users with power levels:', usersWithPowerLevels);
+        //   }
+        // }
       } catch (error) {
         console.error('Error loading power levels:', error);
         setCheckedPowerLevels(0); // Set to 1 to indicate no access
