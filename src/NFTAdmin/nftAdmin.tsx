@@ -11,7 +11,7 @@ import API_URLS from "../config.ts";
 // import { l } from 'node_modules/vite/dist/node/types.d-aGj9QkWt.js';
 
 export const NFTAdmin = () => {
-  const [checkedPowerLevels, setCheckedPowerLevels] = useState(0);
+  // const [checkedPowerLevels, setCheckedPowerLevels] = useState(0);
   const widgetApi = useWidgetApi();
 
   useEffect(() => {
@@ -80,7 +80,7 @@ export const NFTAdmin = () => {
         // }
       } catch (error) {
         console.error('Error loading power levels:', error);
-        setCheckedPowerLevels(0); // Set to 1 to indicate no access
+        // setCheckedPowerLevels(0); // Set to 1 to indicate no access
         return;
       }
     }
