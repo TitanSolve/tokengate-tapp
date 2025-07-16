@@ -1,80 +1,81 @@
-import React from "react";
-import "./Home.css";
+import { useEffect, useState } from "react";
+import { NFTAdmin } from "../../NFTAdmin";
+import { STATE_EVENT_ROOM_MEMBER, STATE_EVENT_POWER_LEVELS } from "@matrix-widget-toolkit/api";
+import { useWidgetApi } from "@matrix-widget-toolkit/react";
+import { Typography } from '@mui/material';
+import { Loader2 } from "lucide-react";
 
-interface TrustLine {
-  account: string;
-  balance: string;
-  currency: string;
-  decodedCurrency: string;
-  limit: string;
-  limit_peer: string;
-  quality_in: number;
-  quality_out: number;
-  no_ripple?: boolean;
-  no_ripple_peer?: boolean;
-}
+const Home = () => {
+    const [checkedPowerLevels, setCheckedPowerLevels] = useState(0);
+    const widgetApi = useWidgetApi();
 
-interface Member {
-  name: string;
-  userId: string;
-  membership: string;
-  walletAddress?: string;
-  trustLines?: TrustLine[];
-  trustLineError?: string | null;
-}
+    useEffect(() => {
+        //The user who has power_level > 100 can only access this Widget
+        const loadData = async () => {
+            try {
+                console.log('widgetparameter--->', widgetApi.widgetParameters, widgetApi.widgetParameters.userId);
+                const events = await widgetApi.receiveStateEvents(
+                    STATE_EVENT_ROOM_MEMBER
+                );
+                console.log("room.events : ", events);
+                const powerLevelsEvent = await widgetApi.receiveStateEvents(STATE_EVENT_POWER_LEVELS);
+                console.log('Power levels event:', powerLevelsEvent);
+                if (powerLevelsEvent) {
+                    interface User {
+                        name: string;
+                        userId: string;
+                        powerLevel?: number; // optional since we are adding it later
+                    }
 
-interface HomeProps {
-  myWalletAddress: string;
-  membersList: Member[];
-  wgtParameters: any; // Using any for widget parameters as the structure might be complex
-}
+                    interface PowerLevelsEvent {
+                        content: {
+                            users: Record<string, number>; // Map userId to power level
+                        };
+                    }
+                    const powerLevelsEvent: PowerLevelsEvent[] = await widgetApi.receiveStateEvents('m.room.power_levels');
 
-const Home: React.FC<HomeProps> = ({ myWalletAddress, membersList, wgtParameters }) => {
+                    if (powerLevelsEvent && powerLevelsEvent[0]) {
+                        const powerLevels = powerLevelsEvent[0]?.content?.users || {};
+                        console.log('Power levels:', powerLevels);
+
+                        // Assuming usersList is available and is an array of User objects
+                        const usersList: User[] = []; // Replace this with your actual usersList data
+                        // Now, map users to their power levels
+                        const usersWithPowerLevels = usersList.map((user) => {
+                            // Get the user's power level, default to 0 if not found
+                            const powerLevel = powerLevels[user.userId] || 0;
+                            return { ...user, powerLevel };
+                        });
+
+                        console.log('Users with power levels:', usersWithPowerLevels);
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading power levels:', error);
+                setCheckedPowerLevels(0); // Set to 1 to indicate no access
+                return;
+            }
+        }
+
+        loadData();
+    }, [widgetApi]);
+
     return (
-        <div className="home-container dark:text-white text-black">
-            <h1 className="home-title dark:text-white text-black">Community Trustlines</h1>
-            
-            <div className="wallet-info dark:bg-gray-800 bg-gray-100">
-                <h3>My Wallet Address:</h3>
-                <p className="wallet-address dark:bg-gray-700 dark:text-gray-200 bg-gray-200 text-gray-800">{myWalletAddress}</p>
-            </div>
-            
-            <div className="members-section">
-                <h2 className="dark:border-gray-700">Members</h2>
-                <div className="members-list">
-                    {membersList && membersList.map((member, index) => (
-                        <div key={index} className="member-card dark:bg-gray-800 dark:border-gray-700">
-                            <div className="member-header">
-                                <h3 className="dark:text-white">{member.name}</h3>
-                                <span className="user-id dark:text-gray-400">{member.userId}</span>
-                            </div>
-                            
-                            {member.trustLines && member.trustLines.length > 0 && (
-                                <div className="trust-lines">
-                                    <h4 className="dark:text-gray-300">Trust Lines:</h4>
-                                    <div className="trust-lines-grid">
-                                        {member.trustLines.map((trustLine, idx) => (
-                                            <div key={idx} className="trust-line-item dark:bg-gray-700">
-                                                <span className="currency dark:text-blue-300">{trustLine.decodedCurrency || trustLine.currency}</span>
-                                                <span className="balance dark:text-green-300">{parseFloat(trustLine.balance).toLocaleString()}</span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-                            
-                            {member.trustLineError && (
-                                <p className="error-message">Error: {member.trustLineError}</p>
-                            )}
-                        </div>
-                    ))}
+        <div>
+            {checkedPowerLevels === 0 ? (
+                <div className="fixed inset-0 flex flex-col items-center justify-center bg-white dark:bg-[#363C43] z-50">
+                    <Loader2 className="animate-spin text-blue-600 dark:text-blue-400 w-12 h-12 mb-4" />
+                    <p className="text-lg font-medium text-gray-700 dark:text-gray-300">Please wait while we check your permissions...</p>
                 </div>
-            </div>
-            
-            <div className="parameters-section dark:bg-gray-800 bg-gray-100">
-                <h3>Widget Parameters</h3>
-                <pre className="parameters-json dark:bg-gray-700 dark:text-gray-200 bg-gray-50 text-gray-800">{JSON.stringify(wgtParameters, null, 2)}</pre>
-            </div>
+            ) : checkedPowerLevels === 1 ? (
+                <div className="fixed inset-0 flex flex-col items-center justify-center bg-white dark:bg-[#363C43] z-50">
+                    <Typography variant="h6" color="error" align="center">
+                        You do not have permission to access this widget.
+                    </Typography>
+                </div>
+            ) : (
+                <NFTAdmin />
+            )}
         </div>
     );
 };
