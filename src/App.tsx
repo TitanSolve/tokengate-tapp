@@ -3,9 +3,10 @@ import { MuiThemeProvider, MuiWidgetApiProvider } from '@matrix-widget-toolkit/m
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { WidgetParameter } from '@matrix-widget-toolkit/api';
 import { NFTAdmin } from "./NFTAdmin";
-import { STATE_EVENT_POWER_LEVELS } from "@matrix-widget-toolkit/api";
+import { STATE_EVENT_ROOM_MEMBER, STATE_EVENT_POWER_LEVELS } from "@matrix-widget-toolkit/api";
 import { useWidgetApi } from "@matrix-widget-toolkit/react";
 import { Typography } from '@mui/material';
+import { Loader2 } from "lucide-react";
 
 interface AppProps {
   widgetApiPromise: Promise<any>;
@@ -20,6 +21,10 @@ function App({ widgetApiPromise }: AppProps) {
       try {
         const widgetApi = useWidgetApi();
         console.log('widgetparameter--->', widgetApi.widgetParameters, widgetApi.widgetParameters.userId);
+        const events = await widgetApi.receiveStateEvents(
+          STATE_EVENT_ROOM_MEMBER
+        );
+        console.log("room.events : ", events);
         const powerLevelsEvent = await widgetApi.receiveStateEvents(STATE_EVENT_POWER_LEVELS);
         console.log('Power levels event:', powerLevelsEvent);
         if (powerLevelsEvent) {
@@ -76,13 +81,16 @@ function App({ widgetApiPromise }: AppProps) {
             }}
           >
             {checkedPowerLevels === 0 ? (
-              <Typography variant="h6" color="error" align="center">
-                Please wait while we check your permissions...
-              </Typography>
+              <div className="fixed inset-0 flex flex-col items-center justify-center bg-white dark:bg-[#363C43] z-50">
+                <Loader2 className="animate-spin text-blue-600 dark:text-blue-400 w-12 h-12 mb-4" />
+                <p className="text-lg font-medium text-gray-700 dark:text-gray-300">Please wait while we check your permissions...</p>
+              </div>
             ) : checkedPowerLevels === 1 ? (
-              <Typography variant="h6" color="error" align="center">
-                You do not have permission to access this widget.
-              </Typography>
+              <div className="fixed inset-0 flex flex-col items-center justify-center bg-white dark:bg-[#363C43] z-50">
+                <Typography variant="h6" color="error" align="center">
+                  You do not have permission to access this widget.
+                </Typography>
+              </div>
             ) : (
               <Routes>
                 <Route path="/" element={<NFTAdmin />} />
