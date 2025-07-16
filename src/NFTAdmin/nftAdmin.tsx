@@ -20,12 +20,12 @@ export const NFTAdmin = () => {
     const loadData = async () => {
       try {
         console.log('widgetparameter--->', widgetApi.widgetParameters, widgetApi.widgetParameters.userId);
-        const events = await widgetApi.receiveStateEvents(
-          STATE_EVENT_ROOM_MEMBER
-        );
-        console.log("room.events : ", events);
-        const powerLevelsEvent = await widgetApi.receiveStateEvents(STATE_EVENT_POWER_LEVELS);
-        console.log('Power levels event:', powerLevelsEvent);
+        // const events = await widgetApi.receiveStateEvents(
+        //   STATE_EVENT_ROOM_MEMBER
+        // );
+        // console.log("room.events : ", events);
+        // const powerLevelsEvent = await widgetApi.receiveStateEvents(STATE_EVENT_POWER_LEVELS);
+        // console.log('Power levels event:', powerLevelsEvent);
 
         const accessToken = API_URLS.accesstoken || "1234567890QWERTYUIOP";
         const userId = API_URLS.synapseUserId || "@tokengatebot:synapse.textrp.io";
