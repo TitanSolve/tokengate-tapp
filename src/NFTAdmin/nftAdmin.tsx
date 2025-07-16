@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useWidgetApi } from "@matrix-widget-toolkit/react";
-import { useNFTAdminLogic } from './hooks/useNFTAdminLogic';
-import { NFTAdminContent } from './components/NFTAdminContent.js';
-import { describeConditionTree } from './utils';
-import { Typography } from '@mui/material';
-import { ConditionTree } from './types';
-// import { STATE_EVENT_ROOM_MEMBER, STATE_EVENT_POWER_LEVELS } from "@matrix-widget-toolkit/api";
-import { Loader2 } from "lucide-react";
+// import { useNFTAdminLogic } from './hooks/useNFTAdminLogic';
+// import { NFTAdminContent } from './components/NFTAdminContent.js';
+// import { describeConditionTree } from './utils';
+// import { Typography } from '@mui/material';
+// import { ConditionTree } from './types';
+// import { Loader2 } from "lucide-react";
 import * as sdk from "matrix-js-sdk";
 import API_URLS from "../config.ts";
 // import { l } from 'node_modules/vite/dist/node/types.d-aGj9QkWt.js';
@@ -28,8 +27,11 @@ export const NFTAdmin = () => {
         // console.log('Power levels event:', powerLevelsEvent);
 
         const accessToken = API_URLS.accesstoken || "1234567890QWERTYUIOP";
+        console.log('Access Token:', accessToken);
         const userId = API_URLS.synapseUserId || "@tokengatebot:synapse.textrp.io";
+        console.log('User ID:', userId);
         const baseUrl: string = API_URLS.synapseUrl || "http://localhost:8008";
+        console.log('Base URL:', baseUrl);
         const matrixClient = sdk.createClient({
           baseUrl,
           accessToken,
@@ -86,51 +88,51 @@ export const NFTAdmin = () => {
     loadData();
   }, [widgetApi]);
 
-  const {
-    savedConditionTree,
-    editingBasic,
-    editingQuantity,
-    editingTraits,
-    activeTab,
-    kickMessage,
-    hasUnsavedChanges,
-    savedMessage,
-    saveError,
-    displayName,
-    handleTabChange,
-    handleTreeChange,
-    saveConditionTree,
-    addConditionToGroup,
-    addSubgroup,
-    setKickMessage,
-  } = useNFTAdminLogic();
+  // const {
+  //   savedConditionTree,
+  //   editingBasic,
+  //   editingQuantity,
+  //   editingTraits,
+  //   activeTab,
+  //   kickMessage,
+  //   hasUnsavedChanges,
+  //   savedMessage,
+  //   saveError,
+  //   displayName,
+  //   handleTabChange,
+  //   handleTreeChange,
+  //   saveConditionTree,
+  //   addConditionToGroup,
+  //   addSubgroup,
+  //   setKickMessage,
+  // } = useNFTAdminLogic();
 
-  if (!savedConditionTree) {
-    return <Typography>Loading...</Typography>;
-  }
+  // if (!savedConditionTree) {
+  //   return <Typography>Loading...</Typography>;
+  // }
 
-  let activeConditionTree: ConditionTree = savedConditionTree; // Initialize with savedConditionTree
-  switch (activeTab) {
-    case 'basic':
-      if (editingBasic) {
-        activeConditionTree = editingBasic;
-      }
-      break;
-    case 'quantity':
-      if (editingQuantity) {
-        activeConditionTree = editingQuantity;
-      }
-      break;
-    case 'traits':
-      if (editingTraits) {
-        activeConditionTree = editingTraits;
-      }
-      break;
-  }
+  // let activeConditionTree: ConditionTree = savedConditionTree; // Initialize with savedConditionTree
+  // switch (activeTab) {
+  //   case 'basic':
+  //     if (editingBasic) {
+  //       activeConditionTree = editingBasic;
+  //     }
+  //     break;
+  //   case 'quantity':
+  //     if (editingQuantity) {
+  //       activeConditionTree = editingQuantity;
+  //     }
+  //     break;
+  //   case 'traits':
+  //     if (editingTraits) {
+  //       activeConditionTree = editingTraits;
+  //     }
+  //     break;
+  // }
 
   return (
     <div>
-      {checkedPowerLevels === 0 ? (
+      {/* {checkedPowerLevels === 0 ? (
         <div className="fixed inset-0 flex flex-col items-center justify-center bg-white dark:bg-[#363C43] z-50">
           <Loader2 className="animate-spin text-blue-600 dark:text-blue-400 w-12 h-12 mb-4" />
           <p className="text-lg font-medium text-gray-700 dark:text-gray-300">Please wait while we check your permissions...</p>
@@ -161,7 +163,7 @@ export const NFTAdmin = () => {
           describeConditionTree={describeConditionTree}
           onTabChange={handleTabChange}
         />
-      )}
+      )} */}
     </div>
   );
 };
