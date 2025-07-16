@@ -40,6 +40,7 @@ export const NFTAdmin = () => {
         console.log('Matrix client created:', matrixClient);
 
         const roomId = widgetApi.widgetParameters.roomId || '';
+        console.log('Room ID:', roomId);
         const currentPowerLevels = await matrixClient.getStateEvent(
           roomId,
           "m.room.power_levels",

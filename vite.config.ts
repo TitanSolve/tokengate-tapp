@@ -22,7 +22,7 @@ export default defineConfig({
     proxy: {
       // Proxy API requests to solve CORS issues
       '/api': {
-        target: 'https://7a36-155-94-255-2.ngrok-free.app ',
+        target: 'http://172.16.200.129:8008',
         changeOrigin: true,
         secure: false,
         rewrite: (path) => path,
