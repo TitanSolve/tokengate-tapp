@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useWidgetApi } from "@matrix-widget-toolkit/react";
 // import { useNFTAdminLogic } from './hooks/useNFTAdminLogic';
 // import { NFTAdminContent } from './components/NFTAdminContent.js';
