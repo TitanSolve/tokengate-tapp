@@ -7,7 +7,7 @@ import { Typography } from '@mui/material';
 import { ConditionTree } from './types';
 import { STATE_EVENT_ROOM_MEMBER, STATE_EVENT_POWER_LEVELS } from "@matrix-widget-toolkit/api";
 import { Loader2 } from "lucide-react";
-import sdk from "matrix-js-sdk";
+import * as sdk from "matrix-js-sdk";
 import API_URLS from "../config.ts";
 // import { l } from 'node_modules/vite/dist/node/types.d-aGj9QkWt.js';
 
