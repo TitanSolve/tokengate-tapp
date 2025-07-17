@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { 
-  Box, 
-  Tabs, 
-  Tab, 
-  Typography, 
-  Button, 
-  TextField, 
-  Paper, 
-  Alert, 
-  Divider, 
-  Container 
+import {
+  Box,
+  Tabs,
+  Tab,
+  Typography,
+  Button,
+  TextField,
+  Paper,
+  Alert,
+  Divider,
+  Container
 } from '@mui/material';
 import { ConditionTree, LockCondition, TraitCondition } from '../types';
 import { BasicConditionForm } from './BasicConditionForm.js';
@@ -56,6 +56,7 @@ export const NFTAdminContent: React.FC<NFTAdminContentProps> = ({
   onTabChange,
 }) => {
   const [currentTab, setCurrentTab] = useState(initialTab);
+  const [kickMessageChanged, setKickMessageChanged] = useState(false);
 
   const handleTabChange = (_: React.SyntheticEvent, newValue: string) => {
     setCurrentTab(newValue);
@@ -158,9 +159,12 @@ export const NFTAdminContent: React.FC<NFTAdminContentProps> = ({
             rows={3}
             variant="outlined"
             value={kickMessage}
-            onChange={(e) => onKickMessageChange(e.target.value)}
+            onChange={(e) => {
+              onKickMessageChange(e.target.value);
+              setKickMessageChanged(true);
+            }}
             placeholder="Sorry, you need to own specific NFTs to join this room."
-            sx={{ 
+            sx={{
               mb: 3,
               '& .MuiOutlinedInput-root': {
                 '&:hover fieldset': {
@@ -187,10 +191,10 @@ export const NFTAdminContent: React.FC<NFTAdminContentProps> = ({
             variant="contained"
             color="primary"
             onClick={onSave}
-            disabled={!hasUnsavedChanges}
-            sx={{ 
-              fontWeight: 600, 
-              py: 1, 
+            disabled={!hasUnsavedChanges || kickMessageChanged}
+            sx={{
+              fontWeight: 600,
+              py: 1,
               px: 3,
               textTransform: 'none',
               borderRadius: 2,
