@@ -191,7 +191,7 @@ export const NFTAdminContent: React.FC<NFTAdminContentProps> = ({
             variant="contained"
             color="primary"
             onClick={onSave}
-            disabled={!hasUnsavedChanges || kickMessageChanged}
+            disabled={!hasUnsavedChanges && !kickMessageChanged}
             sx={{
               fontWeight: 600,
               py: 1,
