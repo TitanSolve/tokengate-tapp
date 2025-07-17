@@ -41,9 +41,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
       nftCount !== condition.nftCount ||
       nftImageUrl !== condition.nftImageUrl;
     
-    console.log('condition:', condition, typeof condition);
     let conditionBasic = condition as LockCondition;
-    console.log('conditionBasic:', conditionBasic, typeof conditionBasic);
     conditionBasic.type = 'lock';
 
     if (hasChanged) {
@@ -173,24 +171,14 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
     try {
       // Use local proxy to avoid CORS issues
       const apiUrl = API_URLS.backendUrl //''; // Empty base URL will use the current origin with the proxy path
-      const apiKey = '1234567890QWERTYUIOP';
-
-      // Log the request details
-      console.log('🔍 DIRECT TEST: Starting API test');
-      console.log(`🔍 DIRECT TEST: Issuer = ${issuer}`);
-      console.log(`🔍 DIRECT TEST: Taxon = ${taxon}`);
-
+      const apiKey = API_URLS.accesstoken || '';
       const requestBody = {
         issuer: encodeURIComponent(issuer),
         taxon: encodeURIComponent(taxon),
       };
       const url = `${apiUrl}/api/nfts/image-only`;
-      console.log(`🔍 DIRECT TEST: URL = ${url}`);
 
       // Make a fetch request directly
-      const startTime = Date.now();
-      console.log('🔍 DIRECT TEST: Sending request...');
-
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -201,23 +189,16 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
         body: JSON.stringify(requestBody),
       });
 
-      const endTime = Date.now();
-      console.log(`🔍 DIRECT TEST: Response received in ${endTime - startTime}ms`);
-      console.log(`🔍 DIRECT TEST: Status = ${response.status} ${response.statusText}`);
-
       if (!response.ok) {
         throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
       }
 
       const data = await response.json();
-      console.log('🔍 DIRECT TEST: Response data:', data);
-
       if (!data.imageUrl) {
         throw new Error('No image URL in response');
       }
 
       setNftImageUrl(data.imageUrl);
-      console.log(`🔍 DIRECT TEST: Image URL = ${data.imageUrl}`);
       setImageError(null);
     } catch (error) {
       console.error('🔍 DIRECT TEST: Error:', error);
