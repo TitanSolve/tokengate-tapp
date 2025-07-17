@@ -109,8 +109,8 @@ export const NFTAdminContent: React.FC<NFTAdminContentProps> = ({
               }}
             >
               <Tab label="Basic" value="basic" />
-              <Tab label="Quantity Logic" value="quantity" />
-              <Tab label="NFT Traits" value="traits" />
+              {/* <Tab label="Quantity Logic" value="quantity" />
+              <Tab label="NFT Traits" value="traits" /> */}
             </Tabs>
           </Box>
 
