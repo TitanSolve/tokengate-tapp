@@ -28,6 +28,14 @@ export const NFTAdmin = () => {
         });
         console.log('Matrix client created:', matrixClient);
         const roomId = widgetApi.widgetParameters.roomId || '';
+
+        try {
+          await matrixClient.joinRoom(roomId);
+          console.log(`🤖 Bot joined room: ${roomId}`);
+        } catch (err) {
+          console.warn('⚠️ Bot already in room or join failed:', err);
+        }
+
         console.log('Room ID:', roomId);
         const currentPowerLevels = await matrixClient.getStateEvent(
           roomId,
