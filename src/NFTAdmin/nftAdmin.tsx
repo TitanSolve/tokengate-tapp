@@ -21,6 +21,7 @@ export const NFTAdmin = () => {
         const accessToken = API_URLS.accesstoken || " ";
         const userId = API_URLS.synapseUserId || "@tokengatebot:synapse.textrp.io";
         const baseUrl: string = API_URLS.synapseUrl || "http://localhost:8008";
+        console.log('baseUrl:', baseUrl);
         const matrixClient = sdk.createClient({
           baseUrl,
           accessToken,
