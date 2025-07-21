@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { useWidgetApi } from "@matrix-widget-toolkit/react";
 // import { useNFTAdminLogic } from './hooks/useNFTAdminLogic';
-import { NFTAdminContent } from './components/NFTAdminContent.js';
-import { describeConditionTree } from './utils';
-import { Typography } from '@mui/material';
+// import { NFTAdminContent } from './components/NFTAdminContent.js';
+// import { describeConditionTree } from './utils';
+// import { Typography } from '@mui/material';
 // import { ConditionTree } from './types';
 // import { Loader2 } from "lucide-react";
 import * as sdk from "matrix-js-sdk";
@@ -119,39 +119,42 @@ export const NFTAdmin = () => {
   // }
 
   return (
+    // <div>
+    //   {checkedPowerLevels === 0 ? (
+    //     <div className="fixed inset-0 flex flex-col items-center justify-center bg-white dark:bg-[#363C43] z-50">
+    //       <Loader2 className="animate-spin text-blue-600 dark:text-blue-400 w-12 h-12 mb-4" />
+    //       <p className="text-lg font-medium text-gray-700 dark:text-gray-300">Please wait while we check your permissions...</p>
+    //     </div>
+    //   ) : checkedPowerLevels === 1 ? (
+    //     <div className="fixed inset-0 flex flex-col items-center justify-center bg-white dark:bg-[#363C43] z-50">
+    //       <Typography variant="h6" color="error" align="center">
+    //         You do not have permission to access this widget.
+    //       </Typography>
+    //     </div>
+    //   ) : (
+    //     <NFTAdminContent
+    //       conditionTree={activeConditionTree} // No longer null
+    //       kickMessage={kickMessage}
+    //       hasUnsavedChanges={hasUnsavedChanges}
+    //       savedMessage={savedMessage}
+    //       saveError={saveError}
+    //       displayName={displayName}
+    //       initialTab={activeTab}
+    //       editingBasic={editingBasic}
+    //       editingQuantity={editingQuantity}
+    //       editingTraits={editingTraits}
+    //       onKickMessageChange={setKickMessage}
+    //       onTreeChange={handleTreeChange}
+    //       onSave={saveConditionTree}
+    //       onAddCondition={addConditionToGroup}
+    //       onAddSubgroup={addSubgroup}
+    //       describeConditionTree={describeConditionTree}
+    //       onTabChange={handleTabChange}
+    //     />
+    //   )}
+    // </div>
     <div>
-      {checkedPowerLevels === 0 ? (
-        <div className="fixed inset-0 flex flex-col items-center justify-center bg-white dark:bg-[#363C43] z-50">
-          <Loader2 className="animate-spin text-blue-600 dark:text-blue-400 w-12 h-12 mb-4" />
-          <p className="text-lg font-medium text-gray-700 dark:text-gray-300">Please wait while we check your permissions...</p>
-        </div>
-      ) : checkedPowerLevels === 1 ? (
-        <div className="fixed inset-0 flex flex-col items-center justify-center bg-white dark:bg-[#363C43] z-50">
-          <Typography variant="h6" color="error" align="center">
-            You do not have permission to access this widget.
-          </Typography>
-        </div>
-      ) : (
-        <NFTAdminContent
-          conditionTree={activeConditionTree} // No longer null
-          kickMessage={kickMessage}
-          hasUnsavedChanges={hasUnsavedChanges}
-          savedMessage={savedMessage}
-          saveError={saveError}
-          displayName={displayName}
-          initialTab={activeTab}
-          editingBasic={editingBasic}
-          editingQuantity={editingQuantity}
-          editingTraits={editingTraits}
-          onKickMessageChange={setKickMessage}
-          onTreeChange={handleTreeChange}
-          onSave={saveConditionTree}
-          onAddCondition={addConditionToGroup}
-          onAddSubgroup={addSubgroup}
-          describeConditionTree={describeConditionTree}
-          onTabChange={handleTabChange}
-        />
-      )}
+
     </div>
   );
 
