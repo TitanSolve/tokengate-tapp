@@ -48,7 +48,11 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   const anchorRef = React.useRef(null);
 
   const handleToggle = () => {
-    // if (e?.target?.tagName.toLowerCase() === 'input' || e?.target?.tagName.toLowerCase() === 'textarea') return;
+    // if (
+    //   e?.target instanceof Element &&
+    //   (e.target.tagName.toLowerCase() === 'input' || e.target.tagName.toLowerCase() === 'textarea')
+    // )
+      return;
     setOpen((prevOpen) => !prevOpen);
   };
 
@@ -56,8 +60,8 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
     setSelectedKey(key);
     setOpen(false);
 
-    if( collectionKeys.length > 0 ) {
-      if( NFTs[key] === undefined ) {
+    if (collectionKeys.length > 0) {
+      if (NFTs[key] === undefined) {
         console.warn(`NFTs for key ${key} not found.`);
         return;
       }
@@ -72,7 +76,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
 
   useEffect(() => {
     const keys = Object.keys(NFTs);
-    if( keys.length > 0 ) {
+    if (keys.length > 0) {
       setSelectedKey(keys[0]);
     }
   }, [NFTs]);
@@ -265,13 +269,6 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
 
   return (
     <Box sx={{ mt: 2 }}>
-      <Typography variant="h6" gutterBottom sx={{ fontWeight: 600, color: 'primary.main' }}>
-        Basic NFT Requirement
-      </Typography>
-      <Typography variant="body2" color="textSecondary" sx={{ mb: 3 }}>
-        Require users to own a specific NFT to access the room
-      </Typography>
-
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
           <Box p={2} maxWidth={480} mx="auto" textAlign="center">
