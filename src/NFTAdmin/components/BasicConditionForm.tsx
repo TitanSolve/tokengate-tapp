@@ -167,7 +167,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
     // Only update if something actually changed
 
     //--------edit this part to avoid empty updates--------
-    if ((issuer === '' && taxon === '' && nftCount === 1 && nftImageUrl === '') ||
+    if ((issuer === '' && taxon === '' && nftCount === 1 && nftImageUrl === '') &&
       (loadedNftCount === condition.nftCount)) {
       console.log('No changes detected, skipping update');
       return;
@@ -193,7 +193,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
         nftImageUrl,
       });
     }
-  }, [issuer, taxon, nftCount, nftImageUrl]);
+  }, [issuer, taxon, nftCount, nftImageUrl, loadedNftCount]);
 
   // Define the callback type for better type safety
   type ImageFetchCallback = (imageUrl: string | null, error: string | null) => void;
