@@ -40,8 +40,8 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   const [issuer, setIssuer] = useState('');
   const [taxon, setTaxon] = useState('');
   const [nftCount, setNftCount] = useState(1);
-  const [nftImageUrl, setNftImageUrl] = useState<string | null>('');  
-  const [isLoadingImage, setIsLoadingImage] = useState<boolean>(false);
+  const [nftImageUrl, setNftImageUrl] = useState<string | null>('');
+  // const [isLoadingImage, setIsLoadingImage] = useState<boolean>(false);
   const [imageError, setImageError] = useState<string | null>(null);
   const [NFTs, setNFTs] = useState<GroupedNFTs>({});
   const collectionKeys = Object.keys(NFTs);
@@ -52,6 +52,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   const anchorRef = React.useRef(null);
 
   useEffect(() => {
+    console.log('Condition changed:', condition);
     setLoadedIssuer(condition.issuer || '');
     setLoadedTaxon(condition.taxon || '');
     setLoadedNftCount(condition.nftCount || 1);
@@ -235,7 +236,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
         return;
       }
 
-      setIsLoadingImage(true);
+      // setIsLoadingImage(true);
       setImageError(null);
 
       // Use the debounced function from our ref
@@ -250,10 +251,10 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
             setImageError('No image found for this NFT');
           }
         }
-        setIsLoadingImage(false);
+        // setIsLoadingImage(false);
       });
     },
-    [setNftImageUrl, setIsLoadingImage, setImageError]
+    [setNftImageUrl, /*setIsLoadingImage,*/ setImageError]
   );
 
   // Effect to automatically fetch NFT image when issuer and taxon are present
@@ -426,11 +427,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
                 {loadedIssuer !== '' || loadedTaxon !== '' ? (
                   <>
                     <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
-                      {isLoadingImage ? (
-                        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 200, width: 200, bgcolor: 'rgba(0,0,0,0.04)' }}>
-                          <CircularProgress size={40} />
-                        </Box>
-                      ) : loadedNftImageUrl ? (
+                      {loadedNftImageUrl ? (
                         <Card sx={{ maxWidth: 128 }}>
                           <CardMedia
                             component="img"
@@ -466,9 +463,9 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
                       )}
                     </Stack>
 
-                    <Divider flexItem sx={{ width: '100%', mt: 1, mb: 1 }} />
+                    <Divider flexItem sx={{ width: '100%', ml: 1, mt: 1, mb: 1 }} />
 
-                    <Grid container spacing={2} justifyContent="center">
+                    <Grid container spacing={3} justifyContent="center">
                       <Typography variant="caption" sx={{ wordBreak: 'break-all' }}>Issuer: {loadedIssuer}</Typography>
                       <Typography variant="caption">Taxon: {loadedTaxon}</Typography>
                       <Typography variant="caption">Count: {loadedNftCount}</Typography>
