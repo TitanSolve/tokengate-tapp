@@ -27,7 +27,7 @@ interface NFTAdminContentProps {
   editingBasic: LockCondition | null;
   editingQuantity: ConditionTree | null;
   editingTraits: TraitCondition | null;
-  userId: string;
+  userId: string | null;
   onKickMessageChange: (message: string) => void;
   onTreeChange: (tree: ConditionTree) => void;
   onSave: () => void;

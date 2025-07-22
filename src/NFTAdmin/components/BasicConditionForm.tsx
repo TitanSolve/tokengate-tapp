@@ -16,7 +16,7 @@ import debounce from 'lodash.debounce';
 import API_URLS from '@/config';
 
 interface BasicConditionFormProps {
-  userId: string;
+  userId: string | null;
   condition: LockCondition;
   onChange: (updatedCondition: LockCondition) => void;
 }
@@ -41,7 +41,8 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   useEffect(() => {
     const fetchNFT = async () => {
       console.log('Fetching NFTs for userId:', userId);
-      const xrplAccount = userId.split("@")[1]?.split(":")[0];
+      const tmpUsrId = userId || "";
+      const xrplAccount = tmpUsrId.split("@")[1]?.split(":")[0];
       console.log('Fetching NFTs for XRPL account:', xrplAccount);
 
       try {
