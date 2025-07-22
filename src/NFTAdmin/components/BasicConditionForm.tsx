@@ -10,9 +10,10 @@ import {
   CircularProgress,
   Alert,
   Avatar,
-  Stack, ClickAwayListener, Paper, Grow, Popper, MenuList, MenuItem, Divider,
+  Stack, ClickAwayListener, Paper, Grow, Popper, MenuList, MenuItem, Divider, useMediaQuery
 } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { useTheme } from '@mui/material/styles';
 import { LockCondition } from '../types';
 import { fetchNFTImageUrl } from '../services/nftImageService';
 import debounce from 'lodash.debounce';
@@ -41,6 +42,8 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   const [NFTs, setNFTs] = useState<GroupedNFTs>({});
   const [loading, setLoading] = useState<boolean>(true);
 
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const collectionKeys = Object.keys(NFTs);
   const [open, setOpen] = useState(false);
   const [selectedKey, setSelectedKey] = useState(collectionKeys.length > 0 ? collectionKeys[0] : '');
@@ -279,13 +282,15 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
                           variant="rounded"
                           src={selected.imageURI}
                           alt={selected.metadata.name}
-                          sx={{ width: 56, height: 56 }}
+                          sx={{ width: 64, height: 64 }}
                         />
                         <Box textAlign="left">
                           <Typography fontWeight="bold">{selected.metadata.name}</Typography>
-                          <Typography variant="body2" color="text.secondary">
-                            {selected.issuer} / Taxon {selected.nftokenTaxon}
-                          </Typography>
+                          {!isSmallScreen && (
+                            <Typography variant="body2" color="text.secondary">
+                              {selected.issuer} / Taxon {selected.nftokenTaxon}
+                            </Typography>
+                          )}
                         </Box>
                         <ArrowDropDownIcon fontSize="large" />
                       </Stack>
@@ -329,15 +334,17 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
                                   key={key}
                                   onClick={() => handleSelect(key)}
                                   selected={isSelected}
-                                  sx={{ p: 1 }}
+                                  sx={{ p: 1.5, borderBottom: '1px solid #eee', '&:hover': { backgroundColor: '#f5f5f5' } }}
                                 >
-                                  <Stack direction="row" spacing={2} alignItems="center">
-                                    <Avatar variant="rounded" src={nft.imageURI} sx={{ width: 48, height: 48 }} />
-                                    <Box>
-                                      <Typography fontWeight="500">{nft.metadata?.name || 'NFT'}</Typography>
-                                      <Typography variant="caption" color="text.secondary">
-                                        {nft.issuer} / Taxon {nft.nftokenTaxon}
-                                      </Typography>
+                                  <Stack direction="row" spacing={2} alignItems="center" width="100%">
+                                    <Avatar variant="rounded" src={nft.imageURI} sx={{ width: 60, height: 60 }} />
+                                    <Box flexGrow={1}>
+                                      <Typography fontWeight="600">{nft.metadata?.name || 'NFT'}</Typography>
+                                      {!isSmallScreen && (
+                                        <Typography variant="caption" color="text.secondary">
+                                          {nft.issuer} / Taxon {nft.nftokenTaxon}
+                                        </Typography>
+                                      )}
                                     </Box>
                                   </Stack>
                                 </MenuItem>
