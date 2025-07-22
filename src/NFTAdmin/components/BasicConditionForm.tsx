@@ -42,6 +42,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   const [taxon, setTaxon] = useState('');
   const [nftCount, setNftCount] = useState(1);
   const [nftImageUrl, setNftImageUrl] = useState<string | null>('');
+  const [isSavedChanges, setIsSavedChanges] = useState(false);
   // const [isLoadingImage, setIsLoadingImage] = useState<boolean>(false);
   const [imageError, setImageError] = useState<string | null>(null);
   const [NFTs, setNFTs] = useState<GroupedNFTs>({});
@@ -53,12 +54,19 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   const anchorRef = React.useRef(null);
 
   useEffect(() => {
-    console.log('Condition changed:', condition);
-    setLoadedIssuer(condition.issuer || '');
-    setLoadedTaxon(condition.taxon || '');
-    setLoadedNftCount(condition.nftCount || 1);
-    setLoadedNftImageUrl(condition.nftImageUrl || null);
-    setIsInitialized(true);
+    if( condition.issuer === '' || condition.taxon === '' ) {
+      console.warn('Condition issuer or taxon is empty, skipping initialization');
+      return;
+    }
+
+    console.log('Condition changed:', condition, isSavedChanges);
+    if (isSavedChanges || (loadedIssuer === '' && loadedTaxon === '') ) {
+      setLoadedIssuer(condition.issuer || '');
+      setLoadedTaxon(condition.taxon || '');
+      setLoadedNftCount(condition.nftCount || 1);
+      setLoadedNftImageUrl(condition.nftImageUrl || null);
+      setIsInitialized(true);
+    }
   }, [condition]);
 
   const handleToggle = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -168,7 +176,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   useEffect(() => {
     // Only update if something actually changed
     console.log('initialized:', isInitialized);
-    if(!isInitialized) {
+    if (!isInitialized) {
       console.log('Component not initialized yet, skipping update');
       return;
     }
@@ -176,7 +184,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
     console.log('Updating parent component with new values:', issuer, taxon, nftCount, nftImageUrl, loadedNftCount, condition.nftCount);
 
     //--------edit this part to avoid empty updates--------
-    if ((issuer === '' && taxon === '' && nftCount === 1 && (nftImageUrl === '' || nftImageUrl === null) ) &&
+    if ((issuer === '' && taxon === '' && nftCount === 1 && (nftImageUrl === '' || nftImageUrl === null)) &&
       (loadedNftCount === condition.nftCount)) {
       console.log('No changes detected, skipping update');
       return;
@@ -192,17 +200,30 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
     let conditionBasic = condition as LockCondition;
     conditionBasic.type = 'lock';
 
+    let changedIssuer = issuer || '';
+    let changedTaxon = taxon || '';
+    let changedNftCount = nftCount || 1;
+    let changedNftImageUrl = nftImageUrl || null;
+
+    if (changedIssuer === '' && changedTaxon === '') {
+      changedIssuer = conditionBasic.issuer || '';
+      changedTaxon = conditionBasic.taxon || '';
+      changedNftCount = loadedNftCount || 1;
+      changedNftImageUrl = conditionBasic.nftImageUrl || null;
+    }
+
+
     if (hasChanged) {
       console.log('-----------conditionBasic changed---------------');
       onChange({
         ...conditionBasic,
-        issuer,
-        taxon,
-        nftCount,
-        nftImageUrl,
+        issuer: changedIssuer,
+        taxon: changedTaxon,
+        nftCount: changedNftCount,
+        nftImageUrl: changedNftImageUrl,
       });
     }
-  }, [issuer, taxon, nftCount, nftImageUrl, loadedNftCount]);
+  }, [issuer, taxon, nftCount, nftImageUrl/*, loadedNftCount*/]);
 
   // Define the callback type for better type safety
   type ImageFetchCallback = (imageUrl: string | null, error: string | null) => void;
