@@ -47,13 +47,14 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   const [selectedKey, setSelectedKey] = useState(collectionKeys.length > 0 ? collectionKeys[0] : '');
   const anchorRef = React.useRef(null);
 
-  const handleToggle = () => {
-    // if (
-    //   e?.target instanceof Element &&
-    //   (e.target.tagName.toLowerCase() === 'input' || e.target.tagName.toLowerCase() === 'textarea')
-    // )
-    // return;
-    setOpen((prevOpen) => !prevOpen);
+  const handleToggle = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (
+      e.target instanceof Element &&
+      ['input', 'textarea'].includes(e.target.tagName.toLowerCase())
+    ) {
+      return;
+    }
+    setOpen(prev => !prev);
   };
 
   const handleSelect = (key: string) => {
