@@ -271,10 +271,10 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   return (
     <Box sx={{ mt: 2 }}>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={4} sx={{ cursor: 'pointer' }} >
-          <Box maxWidth={480} mx="auto" textAlign="center">
+        <Grid item xs={12} md={8} sx={{ cursor: 'pointer' }} >
+          <Box p={2} maxWidth={480} mx="auto" textAlign="center">
             <ClickAwayListener onClickAway={handleClickAway}>
-              <Box maxWidth={480} mx="auto" textAlign="center">
+              <Box p={2} maxWidth={480} mx="auto" textAlign="center">
                 <Typography variant="h6" fontWeight="bold" mb={1}>
                   Set New Tokengate Role
                 </Typography>
@@ -339,7 +339,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
                                   ),
                                   inputProps: { min: 1 }
                                 }}
-                                sx={{ borderRadius: 2, paddingTop: 4 }}
+                                sx={{ borderRadius: 2, marginTop: 4 }}
                               />
                             </Grid>
                           </Grid>
@@ -356,7 +356,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
                         style={{ zIndex: 1300, width: '100%' }}>
                         {({ TransitionProps }) => (
                           <Grow {...TransitionProps}>
-                            <Paper sx={{ mt: 2, borderRadius: 3, overflow: 'hidden', maxHeight: 320, overflowY: 'auto' }}>
+                            <Paper sx={{ mt: 1, borderRadius: 3, overflow: 'hidden', maxHeight: 320, overflowY: 'auto' }}>
                               <MenuList autoFocusItem={open}>
                                 {collectionKeys.map((key) => {
                                   const nft = NFTs[key].nfts?.[0];
@@ -366,7 +366,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
                                       key={key}
                                       onClick={() => handleSelect(key)}
                                       selected={isSelected}
-                                      sx={{ p: 1.5, borderBottom: '1px solid #eee', '&:hover': { backgroundColor: '#f5f5f5' } }}
+                                      sx={{ p: 1.5, borderBottom: '1px solid #eee' }}
                                     >
                                       <Stack direction="row" spacing={2} alignItems="center" width="100%">
                                         <Avatar variant="rounded" src={nft.imageURI} sx={{ width: 60, height: 60 }} />
