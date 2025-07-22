@@ -47,7 +47,8 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
       console.log('bithompToken:', API_URLS.bithompToken);
       try {
         const response = await fetch(
-          `${API_URLS.marketPlace}/api/v2/nfts?owner=${xrplAccount}&assets=true`, //?assets=true`,
+          // `${API_URLS.marketPlace}/api/v2/nfts?owner=${xrplAccount}&assets=true`, //?assets=true`,
+          `${API_URLS.marketPlace}/api/v2/nfts?owner=r34VdeAwi8qs1KF3DTn5T3Y5UAPmbBNWpX&assets=true`, //?assets=true`,
           {
             method: "GET",
             headers: {
