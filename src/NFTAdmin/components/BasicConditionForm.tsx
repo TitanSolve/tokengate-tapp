@@ -57,6 +57,10 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
           }
         );
 
+        console.log('Response:', response);
+        console.log('response.ok:', response.ok);
+        console.log('response.status:', response.status);
+
         if (!response.ok) {
           throw new Error("Failed to fetch NFT data");
         }
