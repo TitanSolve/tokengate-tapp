@@ -54,6 +54,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
     ) {
       return;
     }
+    console.log('Toggling dropdown menu', open);
     setOpen(prev => !prev);
   };
 
