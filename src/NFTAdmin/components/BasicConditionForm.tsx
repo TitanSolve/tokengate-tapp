@@ -52,7 +52,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
     //   e?.target instanceof Element &&
     //   (e.target.tagName.toLowerCase() === 'input' || e.target.tagName.toLowerCase() === 'textarea')
     // )
-      return;
+    // return;
     setOpen((prevOpen) => !prevOpen);
   };
 
