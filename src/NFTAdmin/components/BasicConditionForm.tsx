@@ -325,7 +325,8 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
                                 <strong>Taxon:</strong>
                               </Typography>
                               <Typography variant="caption">{selected.nftokenTaxon}</Typography>
-                              <TextField
+                            </Grid>
+                            <TextField
                                 label="Minimum NFT Count"
                                 type="number"
                                 value={nftCount}
@@ -341,7 +342,6 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
                                 }}
                                 sx={{ borderRadius: 2, marginTop: 4 }}
                               />
-                            </Grid>
                           </Grid>
                         </>
                       ) : (
