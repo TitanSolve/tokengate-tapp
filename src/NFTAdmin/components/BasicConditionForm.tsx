@@ -33,6 +33,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   condition,
   onChange,
 }) => {
+  const [isInitialized, setIsInitialized] = useState(false);
   const [loadedIssuer, setLoadedIssuer] = useState(condition.issuer || '');
   const [loadedTaxon, setLoadedTaxon] = useState(condition.taxon || '');
   const [loadedNftCount, setLoadedNftCount] = useState(condition.nftCount || 1);
@@ -57,6 +58,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
     setLoadedTaxon(condition.taxon || '');
     setLoadedNftCount(condition.nftCount || 1);
     setLoadedNftImageUrl(condition.nftImageUrl || null);
+    setIsInitialized(true);
   }, [condition]);
 
   const handleToggle = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -165,6 +167,13 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   // Effect to update parent component when values change
   useEffect(() => {
     // Only update if something actually changed
+    console.log('initialized:', isInitialized);
+    if(!isInitialized) {
+      console.log('Component not initialized yet, skipping update');
+      return;
+    }
+
+    console.log('Updating parent component with new values:', issuer, taxon, nftCount, nftImageUrl, loadedNftCount, condition.nftCount);
 
     //--------edit this part to avoid empty updates--------
     if ((issuer === '' && taxon === '' && nftCount === 1 && nftImageUrl === '') &&
