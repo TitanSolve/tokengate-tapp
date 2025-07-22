@@ -13,6 +13,7 @@ import {
   Stack, ClickAwayListener, Paper, Grow, Popper, MenuList, MenuItem, Divider, useMediaQuery
 } from '@mui/material';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import FormatListNumberedIcon from '@mui/icons-material/FormatListNumbered';
 import { useTheme } from '@mui/material/styles';
 import { LockCondition } from '../types';
 import { fetchNFTImageUrl } from '../services/nftImageService';
@@ -48,8 +49,10 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   const [open, setOpen] = useState(false);
   const [selectedKey, setSelectedKey] = useState(collectionKeys.length > 0 ? collectionKeys[0] : '');
   const anchorRef = React.useRef(null);
+  const [minCount, setMinCount] = useState(1);
 
   const handleToggle = () => {
+    // if (e?.target?.tagName.toLowerCase() === 'input' || e?.target?.tagName.toLowerCase() === 'textarea') return;
     setOpen((prevOpen) => !prevOpen);
   };
 
@@ -263,99 +266,124 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
         <Grid item xs={12} md={8}>
           <Box p={2} maxWidth={480} mx="auto" textAlign="center">
             <ClickAwayListener onClickAway={handleClickAway}>
-              <Box position="relative">
-                <Stack
-                  direction="column"
-                  alignItems="center"
-                  spacing={2}
-                  border={1}
-                  borderRadius={3}
-                  p={2}
-                  sx={{ bgcolor: 'background.paper', boxShadow: 2, cursor: collectionKeys.length ? 'pointer' : 'default' }}
-                  onClick={collectionKeys.length ? handleToggle : undefined}
-                  ref={anchorRef}
-                >
-                  {selected ? (
-                    <>
-                      <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
-                        <Avatar
-                          variant="rounded"
-                          src={selected.imageURI}
-                          alt={selected.metadata.name}
-                          sx={{ width: 64, height: 64 }}
-                        />
-                        <Box textAlign="left">
-                          <Typography fontWeight="bold">{selected.metadata.name}</Typography>
-                          {!isSmallScreen && (
-                            <Typography variant="body2" color="text.secondary">
-                              {selected.issuer} / Taxon {selected.nftokenTaxon}
-                            </Typography>
-                          )}
-                        </Box>
-                        <ArrowDropDownIcon fontSize="large" />
-                      </Stack>
+              <Box p={2} maxWidth={480} mx="auto" textAlign="center">
+                <Typography variant="h6" fontWeight="bold" mb={1}>
+                  Set Tokengate Role
+                </Typography>
+                <ClickAwayListener onClickAway={handleClickAway}>
+                  <Box position="relative">
+                    <Stack
+                      direction="column"
+                      alignItems="center"
+                      spacing={2}
+                      border={1}
+                      borderRadius={3}
+                      p={2}
+                      sx={{ bgcolor: 'background.paper', boxShadow: 2 }}
+                      onClick={handleToggle}
+                      ref={anchorRef}
+                    >
+                      {selected ? (
+                        <>
+                          <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
+                            <Avatar
+                              variant="rounded"
+                              src={selected.imageURI}
+                              alt={selected.metadata.name}
+                              sx={{ width: 64, height: 64 }}
+                            />
+                            <Box textAlign="left">
+                              <Typography fontWeight="bold">{selected.metadata.name}</Typography>
+                              {!isSmallScreen && (
+                                <Typography variant="body2" color="text.secondary">
+                                  {selected.issuer} / Taxon {selected.nftokenTaxon}
+                                </Typography>
+                              )}
+                            </Box>
+                            <ArrowDropDownIcon fontSize="large" />
+                          </Stack>
 
-                      <Divider flexItem sx={{ width: '100%', mt: 1, mb: 1 }} />
+                          <Divider flexItem sx={{ width: '100%', mt: 1, mb: 1 }} />
 
-                      <Grid container spacing={1} justifyContent="center">
-                        <Grid item xs={12} sm={6}>
-                          <Typography variant="body2" color="text.secondary">
-                            <strong>Issuer:</strong>
-                          </Typography>
-                          <Typography variant="caption" sx={{ wordBreak: 'break-all' }}>{selected.issuer}</Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <Typography variant="body2" color="text.secondary">
-                            <strong>Taxon:</strong>
-                          </Typography>
-                          <Typography variant="caption">{selected.nftokenTaxon}</Typography>
-                        </Grid>
-                      </Grid>
-                    </>
-                  ) : (
-                    <Typography variant="body2" color="text.secondary">
-                      No collections available.
-                    </Typography>
-                  )}
-                </Stack>
+                          <Grid container spacing={2} justifyContent="center">
+                            <Grid item xs={12} sm={6}>
+                              <Typography variant="body2" color="text.secondary">
+                                <strong>Issuer:</strong>
+                              </Typography>
+                              <Typography variant="caption" sx={{ wordBreak: 'break-all' }}>{selected.issuer}</Typography>
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                              <Typography variant="body2" color="text.secondary">
+                                <strong>Taxon:</strong>
+                              </Typography>
+                              <Typography variant="caption">{selected.nftokenTaxon}</Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                              <TextField
+                                label="Minimum NFT Count"
+                                type="number"
+                                value={nftCount}
+                                onChange={handleNftCountChange}
+                                fullWidth
+                                InputProps={{
+                                  startAdornment: (
+                                    <InputAdornment position="start">
+                                      <FormatListNumberedIcon />
+                                    </InputAdornment>
+                                  ),
+                                  inputProps: { min: 1 }
+                                }}
+                                sx={{ borderRadius: 2, backgroundColor: '#fafafa' }}
+                              />
+                            </Grid>
+                          </Grid>
+                        </>
+                      ) : (
+                        <Typography variant="body2" color="text.secondary">
+                          No collections available.
+                        </Typography>
+                      )}
+                    </Stack>
 
-                {collectionKeys.length > 0 && (
-                  <Popper open={open} anchorEl={anchorRef.current} placement="bottom" transition disablePortal modifiers={[{ name: 'offset', options: { offset: [0, 12] } }]}
-                    style={{ zIndex: 1300, width: '100%' }}>
-                    {({ TransitionProps }) => (
-                      <Grow {...TransitionProps}>
-                        <Paper sx={{ mt: 2, borderRadius: 3, overflow: 'hidden', maxHeight: 320, overflowY: 'auto' }}>
-                          <MenuList autoFocusItem={open}>
-                            {collectionKeys.map((key) => {
-                              const nft = NFTs[key].nfts?.[0];
-                              const isSelected = key === selectedKey;
-                              return nft ? (
-                                <MenuItem
-                                  key={key}
-                                  onClick={() => handleSelect(key)}
-                                  selected={isSelected}
-                                  sx={{ p: 1.5, borderBottom: '1px solid #eee', '&:hover': { backgroundColor: '#f5f5f5' } }}
-                                >
-                                  <Stack direction="row" spacing={2} alignItems="center" width="100%">
-                                    <Avatar variant="rounded" src={nft.imageURI} sx={{ width: 60, height: 60 }} />
-                                    <Box flexGrow={1}>
-                                      <Typography fontWeight="600">{nft.metadata?.name || 'NFT'}</Typography>
-                                      {!isSmallScreen && (
-                                        <Typography variant="caption" color="text.secondary">
-                                          {nft.issuer} / Taxon {nft.nftokenTaxon}
-                                        </Typography>
-                                      )}
-                                    </Box>
-                                  </Stack>
-                                </MenuItem>
-                              ) : null;
-                            })}
-                          </MenuList>
-                        </Paper>
-                      </Grow>
+                    {collectionKeys.length > 0 && (
+                      <Popper open={open} anchorEl={anchorRef.current} placement="bottom" transition disablePortal modifiers={[{ name: 'offset', options: { offset: [0, 12] } }]}
+                        style={{ zIndex: 1300, width: '100%' }}>
+                        {({ TransitionProps }) => (
+                          <Grow {...TransitionProps}>
+                            <Paper sx={{ mt: 2, borderRadius: 3, overflow: 'hidden', maxHeight: 320, overflowY: 'auto' }}>
+                              <MenuList autoFocusItem={open}>
+                                {collectionKeys.map((key) => {
+                                  const nft = NFTs[key].nfts?.[0];
+                                  const isSelected = key === selectedKey;
+                                  return nft ? (
+                                    <MenuItem
+                                      key={key}
+                                      onClick={() => handleSelect(key)}
+                                      selected={isSelected}
+                                      sx={{ p: 1.5, borderBottom: '1px solid #eee', '&:hover': { backgroundColor: '#f5f5f5' } }}
+                                    >
+                                      <Stack direction="row" spacing={2} alignItems="center" width="100%">
+                                        <Avatar variant="rounded" src={nft.imageURI} sx={{ width: 60, height: 60 }} />
+                                        <Box flexGrow={1}>
+                                          <Typography fontWeight="600">{nft.metadata?.name || 'NFT'}</Typography>
+                                          {!isSmallScreen && (
+                                            <Typography variant="caption" color="text.secondary">
+                                              {nft.issuer} / Taxon {nft.nftokenTaxon}
+                                            </Typography>
+                                          )}
+                                        </Box>
+                                      </Stack>
+                                    </MenuItem>
+                                  ) : null;
+                                })}
+                              </MenuList>
+                            </Paper>
+                          </Grow>
+                        )}
+                      </Popper>
                     )}
-                  </Popper>
-                )}
+                  </Box>
+                </ClickAwayListener>
               </Box>
             </ClickAwayListener>
           </Box>
