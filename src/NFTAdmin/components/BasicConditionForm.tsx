@@ -165,20 +165,26 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   // Effect to update parent component when values change
   useEffect(() => {
     // Only update if something actually changed
-    if( issuer === '' && taxon === '' && nftCount === 1 && nftImageUrl === '') {
+
+    //--------edit this part to avoid empty updates--------
+    if( (issuer === '' && taxon === '' && nftCount === 1 && nftImageUrl === '') || 
+        (loadedNftCount === condition.nftCount)) {
+          console.log('No changes detected, skipping update');
       return;
     }
-    
+
     const hasChanged =
       issuer !== condition.issuer ||
       taxon !== condition.taxon ||
       nftCount !== condition.nftCount ||
-      nftImageUrl !== condition.nftImageUrl;
+      nftImageUrl !== condition.nftImageUrl ||
+      loadedNftCount !== condition.nftCount ;
 
     let conditionBasic = condition as LockCondition;
     conditionBasic.type = 'lock';
 
     if (hasChanged) {
+      console.log('-----------conditionBasic changed---------------');
       onChange({
         ...conditionBasic,
         issuer,
