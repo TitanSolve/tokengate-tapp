@@ -44,10 +44,10 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
       const tmpUsrId = userId || "";
       const xrplAccount = tmpUsrId.split("@")[1]?.split(":")[0];
       console.log('Fetching NFTs for XRPL account:', xrplAccount);
-
+      console.log('bithompToken:', process.env.bithompToken);
       try {
         const response = await fetch(
-          `${API_URLS.marketPlace}/api/v2/nfts?owner=${xrplAccount}`, //?assets=true`,
+          `${API_URLS.marketPlace}/api/v2/nfts?owner=${xrplAccount}&assets=true`, //?assets=true`,
           {
             method: "GET",
             headers: {
