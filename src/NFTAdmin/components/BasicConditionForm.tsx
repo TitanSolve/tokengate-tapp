@@ -39,17 +39,13 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   const [nftImageUrl, setNftImageUrl] = useState<string | null>(condition.nftImageUrl);
   const [isLoadingImage, setIsLoadingImage] = useState<boolean>(false);
   const [imageError, setImageError] = useState<string | null>(null);
-
   const [NFTs, setNFTs] = useState<GroupedNFTs>({});
-  const [loading, setLoading] = useState<boolean>(true);
-
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const collectionKeys = Object.keys(NFTs);
   const [open, setOpen] = useState(false);
   const [selectedKey, setSelectedKey] = useState(collectionKeys.length > 0 ? collectionKeys[0] : '');
   const anchorRef = React.useRef(null);
-  const [minCount, setMinCount] = useState(1);
 
   const handleToggle = () => {
     // if (e?.target?.tagName.toLowerCase() === 'input' || e?.target?.tagName.toLowerCase() === 'textarea') return;
@@ -59,14 +55,33 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   const handleSelect = (key: string) => {
     setSelectedKey(key);
     setOpen(false);
+
+    if( collectionKeys.length > 0 ) {
+      if( NFTs[key] === undefined ) {
+        console.warn(`NFTs for key ${key} not found.`);
+        return;
+      }
+      const selectedNFT = NFTs[key].nfts?.[0];
+      if (selectedNFT) {
+        setIssuer(selectedNFT.issuer);
+        setTaxon(selectedNFT.nftokenTaxon);
+        setNftImageUrl(selectedNFT.imageURI);
+      }
+    }
   };
+
+  useEffect(() => {
+    const keys = Object.keys(NFTs);
+    if( keys.length > 0 ) {
+      setSelectedKey(keys[0]);
+    }
+  }, [NFTs]);
 
   const handleClickAway = () => {
     setOpen(false);
   };
 
-  const selectedCollection = NFTs[selectedKey];
-  const selected = selectedCollection?.nfts?.[0];
+  const selected = NFTs[selectedKey]?.nfts?.[0];
 
   useEffect(() => {
     const fetchNFT = async () => {
@@ -123,16 +138,11 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
         if (err.name !== "AbortError") {
           console.error(`Error fetching NFTs for ${userId}:`, err);
         }
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchNFT();
-    setIssuer('1');
-    setTaxon('0');
     console.log('NFTs fetched:', NFTs);
-    console.log(loading);
   }, [userId]);
 
   // Effect to update parent component when values change
@@ -268,7 +278,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
             <ClickAwayListener onClickAway={handleClickAway}>
               <Box p={2} maxWidth={480} mx="auto" textAlign="center">
                 <Typography variant="h6" fontWeight="bold" mb={1}>
-                  Set Tokengate Role
+                  Set New Tokengate Role
                 </Typography>
                 <ClickAwayListener onClickAway={handleClickAway}>
                   <Box position="relative">
@@ -387,90 +397,89 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
               </Box>
             </ClickAwayListener>
           </Box>
-
-          <TextField
-            fullWidth
-            label="Required Number of NFTs"
-            variant="outlined"
-            type="number"
-            value={nftCount}
-            onChange={handleNftCountChange}
-            InputProps={{
-              inputProps: { min: 1 },
-              startAdornment: <InputAdornment position="start">#</InputAdornment>,
-            }}
-            margin="normal"
-            helperText="How many of these NFTs must a user own"
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                '&:hover fieldset': {
-                  borderColor: 'primary.light',
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: 'primary.main',
-                  borderWidth: 2,
-                },
-              },
-              '& .MuiFormHelperText-root': {
-                fontSize: '0.75rem',
-                marginTop: 0.5
-              }
-            }}
-          />
-
-          {/* NFT image is now fetched automatically based on issuer and taxon */}
         </Grid>
 
-        <Grid item xs={12} md={4}>
-          <Box sx={{ mt: 2 }}>
-            <Typography variant="subtitle2" gutterBottom>
-              NFT Image Preview
-            </Typography>
+        <Divider flexItem sx={{ width: '100%', mt: 2, mb: 2 }} />
 
-            {isLoadingImage ? (
-              <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 200, width: 200, bgcolor: 'rgba(0,0,0,0.04)' }}>
-                <CircularProgress size={40} />
-              </Box>
-            ) : nftImageUrl ? (
-              <Card sx={{ maxWidth: 200 }}>
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image={nftImageUrl}
-                  alt="NFT Preview"
-                  sx={{ objectFit: 'contain' }}
-                />
-              </Card>
-            ) : (
-              <Box
-                sx={{
-                  height: 200,
-                  width: 200,
-                  bgcolor: 'rgba(0,0,0,0.04)',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  border: '1px dashed rgba(0,0,0,0.2)',
-                  flexDirection: 'column',
-                  padding: 2
-                }}
-              >
-                {imageError ? (
-                  <Alert severity="error" sx={{ fontSize: '0.75rem', mb: 1, width: '100%' }}>
-                    {imageError}
-                  </Alert>
-                ) : null}
-                <Typography variant="body2" color="textSecondary" align="center">
-                  {issuer && taxon ? 'No image available' : 'Enter issuer and taxon'}
-                </Typography>
-              </Box>
-            )}
+        <Box p={2} maxWidth={480} mx="auto" textAlign="center">
+          <ClickAwayListener onClickAway={handleClickAway}>
+            <Box p={2} maxWidth={480} mx="auto" textAlign="center">
+              <Typography variant="h6" fontWeight="bold" mb={1}>
+                Current Tokengate Role
+              </Typography>
+              <ClickAwayListener onClickAway={handleClickAway}>
+                <Box position="relative">
+                  <Stack
+                    direction="column"
+                    alignItems="center"
+                    spacing={2}
+                    border={1}
+                    borderRadius={3}
+                    p={2}
+                    sx={{ bgcolor: 'background.paper', boxShadow: 2 }}
+                    ref={anchorRef}
+                  >
+                    {issuer !== '' && taxon !== '' ? (
+                      <>
+                        <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
+                          {isLoadingImage ? (
+                            <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 200, width: 200, bgcolor: 'rgba(0,0,0,0.04)' }}>
+                              <CircularProgress size={40} />
+                            </Box>
+                          ) : nftImageUrl ? (
+                            <Card sx={{ maxWidth: 128 }}>
+                              <CardMedia
+                                component="img"
+                                height="128"
+                                image={nftImageUrl}
+                                alt="NFT Preview"
+                                sx={{ objectFit: 'contain' }}
+                              />
+                            </Card>
+                          ) : (
+                            <Box
+                              sx={{
+                                height: 128,
+                                width: 128,
+                                bgcolor: 'rgba(0,0,0,0.04)',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                border: '1px dashed rgba(0,0,0,0.2)',
+                                flexDirection: 'column',
+                                padding: 2
+                              }}
+                            >
+                              {imageError ? (
+                                <Alert severity="error" sx={{ fontSize: '0.75rem', mb: 1, width: '100%' }}>
+                                  {imageError}
+                                </Alert>
+                              ) : null}
+                              <Typography variant="body2" color="textSecondary" align="center">
+                                {issuer && taxon ? 'No image available' : 'Enter issuer and taxon'}
+                              </Typography>
+                            </Box>
+                          )}
+                        </Stack>
 
-            <Typography variant="caption" color="textSecondary" sx={{ display: 'block', mt: 1 }}>
-              Auto-fetching image based on issuer/taxon
-            </Typography>
-          </Box>
-        </Grid>
+                        <Divider flexItem sx={{ width: '100%', mt: 1, mb: 1 }} />
+
+                        <Grid container spacing={2} justifyContent="center">
+                          <Typography variant="caption" sx={{ wordBreak: 'break-all' }}>Issuer: {issuer}</Typography>
+                          <Typography variant="caption">Taxon: {taxon}</Typography>
+                        </Grid>
+                      </>
+                    ) : (
+                      <Typography variant="body2" color="text.secondary">
+                        Role is not set. Please set a role.
+                      </Typography>
+                    )}
+                  </Stack>
+                </Box>
+              </ClickAwayListener>
+            </Box>
+          </ClickAwayListener>
+        </Box>
       </Grid>
     </Box>
   );
