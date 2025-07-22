@@ -9,7 +9,10 @@ import {
   CardMedia,
   CircularProgress,
   Alert,
+  Avatar,
+  Stack, ClickAwayListener, Paper, Grow, Popper, MenuList, MenuItem, Divider,
 } from '@mui/material';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { LockCondition } from '../types';
 import { fetchNFTImageUrl } from '../services/nftImageService';
 import debounce from 'lodash.debounce';
@@ -38,6 +41,25 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   const [NFTs, setNFTs] = useState<GroupedNFTs>({});
   const [loading, setLoading] = useState<boolean>(true);
 
+  const [open, setOpen] = useState(false);
+  const [selectedKey, setSelectedKey] = useState(Object.keys(NFTs)[0]);
+  const anchorRef = React.useRef(null);
+
+  const handleToggle = () => {
+    setOpen((prevOpen) => !prevOpen);
+  };
+
+  const handleSelect = (key: string) => {
+    setSelectedKey(key);
+    setOpen(false);
+  };
+
+  const handleClickAway = () => {
+    setOpen(false);
+  };
+
+  const selected = NFTs[selectedKey].nfts[0];
+
   useEffect(() => {
     const fetchNFT = async () => {
       console.log('Fetching NFTs for userId:', userId);
@@ -56,10 +78,6 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
             },
           }
         );
-
-        console.log('Response:', response);
-        console.log('response.ok:', response.ok);
-        console.log('response.status:', response.status);
 
         if (!response.ok) {
           throw new Error("Failed to fetch NFT data");
@@ -104,6 +122,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
 
     fetchNFT();
     setIssuer('1');
+    setTaxon('0');
     console.log('NFTs fetched:', NFTs);
     console.log(loading);
   }, [userId]);
@@ -116,7 +135,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
       taxon !== condition.taxon ||
       nftCount !== condition.nftCount ||
       nftImageUrl !== condition.nftImageUrl;
-    
+
     let conditionBasic = condition as LockCondition;
     conditionBasic.type = 'lock';
 
@@ -221,10 +240,6 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
     };
   }, [issuer, taxon, debouncedFetchImage]);
 
-  const handleTaxonChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTaxon(e.target.value);
-  };
-
   const handleNftCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10);
     setNftCount(isNaN(value) ? 1 : Math.max(1, value));
@@ -241,31 +256,90 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
 
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
-          <TextField
-            fullWidth
-            label="Taxon"
-            variant="outlined"
-            value={taxon}
-            onChange={handleTaxonChange}
-            placeholder="Enter the NFT taxon"
-            margin="normal"
-            helperText="The numeric identifier for the NFT collection"
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                '&:hover fieldset': {
-                  borderColor: 'primary.light',
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: 'primary.main',
-                  borderWidth: 2,
-                },
-              },
-              '& .MuiFormHelperText-root': {
-                fontSize: '0.75rem',
-                marginTop: 0.5
-              }
-            }}
-          />
+          <Box p={2} maxWidth={480} mx="auto" textAlign="center">
+            <ClickAwayListener onClickAway={handleClickAway}>
+              <Box position="relative">
+                <Stack
+                  direction="column"
+                  alignItems="center"
+                  spacing={2}
+                  border={1}
+                  borderRadius={3}
+                  p={2}
+                  sx={{ bgcolor: 'background.paper', boxShadow: 2, cursor: 'pointer' }}
+                  onClick={handleToggle}
+                  ref={anchorRef}
+                >
+                  <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
+                    <Avatar
+                      variant="rounded"
+                      src={selected.imageURI}
+                      alt={selected.metadata.name}
+                      sx={{ width: 56, height: 56 }}
+                    />
+                    <Box textAlign="left">
+                      <Typography fontWeight="bold">{selected.metadata.name}</Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {selected.issuer} / Taxon {selected.nftokenTaxon}
+                      </Typography>
+                    </Box>
+                    <ArrowDropDownIcon fontSize="large" />
+                  </Stack>
+
+                  <Divider flexItem sx={{ width: '100%', mt: 1, mb: 1 }} />
+
+                  <Grid container spacing={1} justifyContent="center">
+                    <Grid item xs={12} sm={6}>
+                      <Typography variant="body2" color="text.secondary">
+                        <strong>Issuer:</strong>
+                      </Typography>
+                      <Typography variant="caption" sx={{ wordBreak: 'break-all' }}>{selected.issuer}</Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Typography variant="body2" color="text.secondary">
+                        <strong>Taxon:</strong>
+                      </Typography>
+                      <Typography variant="caption">{selected.nftokenTaxon}</Typography>
+                    </Grid>
+                  </Grid>
+                </Stack>
+
+                <Popper open={open} anchorEl={anchorRef.current} placement="bottom" transition disablePortal modifiers={[{ name: 'offset', options: { offset: [0, 12] } }]}
+                  style={{ zIndex: 1300, width: '100%' }}>
+                  {({ TransitionProps }) => (
+                    <Grow {...TransitionProps}>
+                      <Paper sx={{ mt: 2, borderRadius: 3, overflow: 'hidden', maxHeight: 320, overflowY: 'auto' }}>
+                        <MenuList autoFocusItem={open}>
+                          {Object.entries(NFTs).map(([key, value]) => {
+                            const nft = value.nfts[0];
+                            const isSelected = key === selectedKey;
+                            return (
+                              <MenuItem
+                                key={key}
+                                onClick={() => handleSelect(key)}
+                                selected={isSelected}
+                                sx={{ p: 1 }}
+                              >
+                                <Stack direction="row" spacing={2} alignItems="center">
+                                  <Avatar variant="rounded" src={nft.imageURI} sx={{ width: 48, height: 48 }} />
+                                  <Box>
+                                    <Typography fontWeight="500">{nft.metadata?.name || 'NFT'}</Typography>
+                                    <Typography variant="caption" color="text.secondary">
+                                      {nft.issuer} / Taxon {nft.nftokenTaxon}
+                                    </Typography>
+                                  </Box>
+                                </Stack>
+                              </MenuItem>
+                            );
+                          })}
+                        </MenuList>
+                      </Paper>
+                    </Grow>
+                  )}
+                </Popper>
+              </Box>
+            </ClickAwayListener>
+          </Box>
 
           <TextField
             fullWidth
