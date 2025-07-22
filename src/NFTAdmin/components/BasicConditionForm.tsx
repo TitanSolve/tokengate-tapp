@@ -77,7 +77,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
               ?.replace("ipfs://", "https://ipfs.io/ipfs/")
               .replace("#", "%23") || "";
 
-          const key = `${nft?.issuer}_${nft?.taxon}`;
+          const key = `${nft?.issuer}_${nft?.nftokenTaxon}`;
 
           if (!grouped[key]) {
             grouped[key] = { nfts: [] };
