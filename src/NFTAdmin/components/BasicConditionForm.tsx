@@ -7,7 +7,6 @@ import {
   Grid,
   Card,
   CardMedia,
-  CircularProgress,
   Alert,
   Avatar,
   Stack, ClickAwayListener, Paper, Grow, Popper, MenuList, MenuItem, Divider, useMediaQuery
