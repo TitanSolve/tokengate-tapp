@@ -167,9 +167,9 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
     // Only update if something actually changed
 
     //--------edit this part to avoid empty updates--------
-    if( (issuer === '' && taxon === '' && nftCount === 1 && nftImageUrl === '') || 
-        (loadedNftCount === condition.nftCount)) {
-          console.log('No changes detected, skipping update');
+    if ((issuer === '' && taxon === '' && nftCount === 1 && nftImageUrl === '') ||
+      (loadedNftCount === condition.nftCount)) {
+      console.log('No changes detected, skipping update');
       return;
     }
 
@@ -178,7 +178,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
       taxon !== condition.taxon ||
       nftCount !== condition.nftCount ||
       nftImageUrl !== condition.nftImageUrl ||
-      loadedNftCount !== condition.nftCount ;
+      loadedNftCount !== condition.nftCount;
 
     let conditionBasic = condition as LockCondition;
     conditionBasic.type = 'lock';
@@ -288,6 +288,11 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   const handleNftCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10);
     setNftCount(isNaN(value) ? 1 : Math.max(1, value));
+  };
+
+  const handleLoadedNftCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = parseInt(e.target.value, 10);
+    setLoadedNftCount(isNaN(value) ? 1 : Math.max(1, value));
   };
 
   return (
@@ -478,8 +483,23 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
                     <Grid container spacing={3} justifyContent="center">
                       <Typography variant="caption" sx={{ wordBreak: 'break-all' }}>Issuer: {loadedIssuer}</Typography>
                       <Typography variant="caption">Taxon: {loadedTaxon}</Typography>
-                      <Typography variant="caption">Count: {loadedNftCount}</Typography>
                     </Grid>
+                    <TextField
+                      label="Minimum NFT Count"
+                      type="number"
+                      value={loadedNftCount}
+                      onChange={handleLoadedNftCountChange}
+                      fullWidth
+                      InputProps={{
+                        startAdornment: (
+                          <InputAdornment position="start">
+                            <FormatListNumberedIcon />
+                          </InputAdornment>
+                        ),
+                        inputProps: { min: 1 }
+                      }}
+                      sx={{ borderRadius: 2, marginTop: 4 }}
+                    />
                   </>
                 ) : (
                   <Typography variant="body2" color="text.secondary">
