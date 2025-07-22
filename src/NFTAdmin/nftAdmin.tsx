@@ -94,9 +94,12 @@ export const NFTAdmin = () => {
   }
 
   let activeConditionTree: ConditionTree = savedConditionTree; // Initialize with savedConditionTree
+  console.log('Active condition tree:', activeConditionTree);
+  console.log('activeTab:', activeTab);
   switch (activeTab) {
     case 'basic':
       if (editingBasic) {
+        console.log('Using editingBasic condition tree:', editingBasic);
         activeConditionTree = editingBasic;
       }
       break;
