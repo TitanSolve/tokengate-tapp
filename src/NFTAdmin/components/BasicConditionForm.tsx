@@ -85,6 +85,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   }, [NFTs]);
 
   const handleClickAway = () => {
+    console.log('Click away from dropdown, closing menu');
     setOpen(false);
   };
 
