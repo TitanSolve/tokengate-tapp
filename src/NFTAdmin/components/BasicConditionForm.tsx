@@ -33,19 +33,30 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   condition,
   onChange,
 }) => {
-  const [issuer, setIssuer] = useState(condition.issuer || '');
-  const [taxon, setTaxon] = useState(condition.taxon || '');
-  const [nftCount, setNftCount] = useState(condition.nftCount || 1);
-  const [nftImageUrl, setNftImageUrl] = useState<string | null>(condition.nftImageUrl);
+  const [loadedIssuer, setLoadedIssuer] = useState(condition.issuer || '');
+  const [loadedTaxon, setLoadedTaxon] = useState(condition.taxon || '');
+  const [loadedNftCount, setLoadedNftCount] = useState(condition.nftCount || 1);
+  const [loadedNftImageUrl, setLoadedNftImageUrl] = useState<string | null>(condition.nftImageUrl);
+  const [issuer, setIssuer] = useState('');
+  const [taxon, setTaxon] = useState('');
+  const [nftCount, setNftCount] = useState(1);
+  const [nftImageUrl, setNftImageUrl] = useState<string | null>('');  
   const [isLoadingImage, setIsLoadingImage] = useState<boolean>(false);
   const [imageError, setImageError] = useState<string | null>(null);
   const [NFTs, setNFTs] = useState<GroupedNFTs>({});
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const collectionKeys = Object.keys(NFTs);
   const [open, setOpen] = useState(false);
   const [selectedKey, setSelectedKey] = useState(collectionKeys.length > 0 ? collectionKeys[0] : '');
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const anchorRef = React.useRef(null);
+
+  useEffect(() => {
+    setLoadedIssuer(condition.issuer || '');
+    setLoadedTaxon(condition.taxon || '');
+    setLoadedNftCount(condition.nftCount || 1);
+    setLoadedNftImageUrl(condition.nftImageUrl || null);
+  }, [condition]);
 
   const handleToggle = (e: React.MouseEvent<HTMLDivElement>) => {
     if (
@@ -327,21 +338,21 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
                               <Typography variant="caption">{selected.nftokenTaxon}</Typography>
                             </Grid>
                             <TextField
-                                label="Minimum NFT Count"
-                                type="number"
-                                value={nftCount}
-                                onChange={handleNftCountChange}
-                                fullWidth
-                                InputProps={{
-                                  startAdornment: (
-                                    <InputAdornment position="start">
-                                      <FormatListNumberedIcon />
-                                    </InputAdornment>
-                                  ),
-                                  inputProps: { min: 1 }
-                                }}
-                                sx={{ borderRadius: 2, marginTop: 4 }}
-                              />
+                              label="Minimum NFT Count"
+                              type="number"
+                              value={nftCount}
+                              onChange={handleNftCountChange}
+                              fullWidth
+                              InputProps={{
+                                startAdornment: (
+                                  <InputAdornment position="start">
+                                    <FormatListNumberedIcon />
+                                  </InputAdornment>
+                                ),
+                                inputProps: { min: 1 }
+                              }}
+                              sx={{ borderRadius: 2, marginTop: 4 }}
+                            />
                           </Grid>
                         </>
                       ) : (
@@ -412,19 +423,19 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
                 p={2}
                 sx={{ bgcolor: 'background.paper', boxShadow: 2 }}
               >
-                {issuer !== '' && taxon !== '' ? (
+                {loadedIssuer !== '' || loadedTaxon !== '' ? (
                   <>
                     <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
                       {isLoadingImage ? (
                         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 200, width: 200, bgcolor: 'rgba(0,0,0,0.04)' }}>
                           <CircularProgress size={40} />
                         </Box>
-                      ) : nftImageUrl ? (
+                      ) : loadedNftImageUrl ? (
                         <Card sx={{ maxWidth: 128 }}>
                           <CardMedia
                             component="img"
                             height="128"
-                            image={nftImageUrl}
+                            image={loadedNftImageUrl}
                             alt="NFT Preview"
                             sx={{ objectFit: 'contain' }}
                           />
@@ -449,7 +460,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
                             </Alert>
                           ) : null}
                           <Typography variant="body2" color="textSecondary" align="center">
-                            {issuer && taxon ? 'No image available' : 'Enter issuer and taxon'}
+                            No image available.
                           </Typography>
                         </Box>
                       )}
@@ -458,8 +469,9 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
                     <Divider flexItem sx={{ width: '100%', mt: 1, mb: 1 }} />
 
                     <Grid container spacing={2} justifyContent="center">
-                      <Typography variant="caption" sx={{ wordBreak: 'break-all' }}>Issuer: {issuer}</Typography>
-                      <Typography variant="caption">Taxon: {taxon}</Typography>
+                      <Typography variant="caption" sx={{ wordBreak: 'break-all' }}>Issuer: {loadedIssuer}</Typography>
+                      <Typography variant="caption">Taxon: {loadedTaxon}</Typography>
+                      <Typography variant="caption">Count: {loadedNftCount}</Typography>
                     </Grid>
                   </>
                 ) : (
