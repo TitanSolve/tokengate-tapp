@@ -55,6 +55,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
       return;
     }
     console.log('Toggling dropdown menu', open);
+    console.log(collectionKeys.length, 'collectionKeys.length');
     setOpen(prev => !prev);
   };
 
