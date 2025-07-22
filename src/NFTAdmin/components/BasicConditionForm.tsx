@@ -274,7 +274,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   return (
     <Box sx={{ mt: 2 }}>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={8}>
+        <Grid item xs={12} md={8} sx={{ cursor: 'pointer' }} >
           <Box p={2} maxWidth={480} mx="auto" textAlign="center">
             <ClickAwayListener onClickAway={handleClickAway}>
               <Box p={2} maxWidth={480} mx="auto" textAlign="center">
@@ -328,8 +328,6 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
                                 <strong>Taxon:</strong>
                               </Typography>
                               <Typography variant="caption">{selected.nftokenTaxon}</Typography>
-                            </Grid>
-                            <Grid item xs={12}>
                               <TextField
                                 label="Minimum NFT Count"
                                 type="number"
@@ -344,7 +342,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
                                   ),
                                   inputProps: { min: 1 }
                                 }}
-                                sx={{ borderRadius: 2, backgroundColor: '#fafafa' }}
+                                sx={{ borderRadius: 2 }}
                               />
                             </Grid>
                           </Grid>
