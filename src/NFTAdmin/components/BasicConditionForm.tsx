@@ -165,6 +165,10 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   // Effect to update parent component when values change
   useEffect(() => {
     // Only update if something actually changed
+    if( issuer === '' && taxon === '' && nftCount === 1 && nftImageUrl === '') {
+      return;
+    }
+    
     const hasChanged =
       issuer !== condition.issuer ||
       taxon !== condition.taxon ||
