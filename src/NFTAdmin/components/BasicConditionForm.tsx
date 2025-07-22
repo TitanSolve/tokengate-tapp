@@ -41,8 +41,9 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   const [NFTs, setNFTs] = useState<GroupedNFTs>({});
   const [loading, setLoading] = useState<boolean>(true);
 
+  const collectionKeys = Object.keys(NFTs);
   const [open, setOpen] = useState(false);
-  const [selectedKey, setSelectedKey] = useState(Object.keys(NFTs)[0]);
+  const [selectedKey, setSelectedKey] = useState(collectionKeys.length > 0 ? collectionKeys[0] : '');
   const anchorRef = React.useRef(null);
 
   const handleToggle = () => {
@@ -58,7 +59,8 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
     setOpen(false);
   };
 
-  const selected = NFTs[selectedKey].nfts[0];
+  const selectedCollection = NFTs[selectedKey];
+  const selected = selectedCollection?.nfts?.[0];
 
   useEffect(() => {
     const fetchNFT = async () => {
@@ -266,77 +268,87 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
                   border={1}
                   borderRadius={3}
                   p={2}
-                  sx={{ bgcolor: 'background.paper', boxShadow: 2, cursor: 'pointer' }}
-                  onClick={handleToggle}
+                  sx={{ bgcolor: 'background.paper', boxShadow: 2, cursor: collectionKeys.length ? 'pointer' : 'default' }}
+                  onClick={collectionKeys.length ? handleToggle : undefined}
                   ref={anchorRef}
                 >
-                  <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
-                    <Avatar
-                      variant="rounded"
-                      src={selected.imageURI}
-                      alt={selected.metadata.name}
-                      sx={{ width: 56, height: 56 }}
-                    />
-                    <Box textAlign="left">
-                      <Typography fontWeight="bold">{selected.metadata.name}</Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {selected.issuer} / Taxon {selected.nftokenTaxon}
-                      </Typography>
-                    </Box>
-                    <ArrowDropDownIcon fontSize="large" />
-                  </Stack>
+                  {selected ? (
+                    <>
+                      <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
+                        <Avatar
+                          variant="rounded"
+                          src={selected.imageURI}
+                          alt={selected.metadata.name}
+                          sx={{ width: 56, height: 56 }}
+                        />
+                        <Box textAlign="left">
+                          <Typography fontWeight="bold">{selected.metadata.name}</Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {selected.issuer} / Taxon {selected.nftokenTaxon}
+                          </Typography>
+                        </Box>
+                        <ArrowDropDownIcon fontSize="large" />
+                      </Stack>
 
-                  <Divider flexItem sx={{ width: '100%', mt: 1, mb: 1 }} />
+                      <Divider flexItem sx={{ width: '100%', mt: 1, mb: 1 }} />
 
-                  <Grid container spacing={1} justifyContent="center">
-                    <Grid item xs={12} sm={6}>
-                      <Typography variant="body2" color="text.secondary">
-                        <strong>Issuer:</strong>
-                      </Typography>
-                      <Typography variant="caption" sx={{ wordBreak: 'break-all' }}>{selected.issuer}</Typography>
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Typography variant="body2" color="text.secondary">
-                        <strong>Taxon:</strong>
-                      </Typography>
-                      <Typography variant="caption">{selected.nftokenTaxon}</Typography>
-                    </Grid>
-                  </Grid>
+                      <Grid container spacing={1} justifyContent="center">
+                        <Grid item xs={12} sm={6}>
+                          <Typography variant="body2" color="text.secondary">
+                            <strong>Issuer:</strong>
+                          </Typography>
+                          <Typography variant="caption" sx={{ wordBreak: 'break-all' }}>{selected.issuer}</Typography>
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <Typography variant="body2" color="text.secondary">
+                            <strong>Taxon:</strong>
+                          </Typography>
+                          <Typography variant="caption">{selected.nftokenTaxon}</Typography>
+                        </Grid>
+                      </Grid>
+                    </>
+                  ) : (
+                    <Typography variant="body2" color="text.secondary">
+                      No collections available.
+                    </Typography>
+                  )}
                 </Stack>
 
-                <Popper open={open} anchorEl={anchorRef.current} placement="bottom" transition disablePortal modifiers={[{ name: 'offset', options: { offset: [0, 12] } }]}
-                  style={{ zIndex: 1300, width: '100%' }}>
-                  {({ TransitionProps }) => (
-                    <Grow {...TransitionProps}>
-                      <Paper sx={{ mt: 2, borderRadius: 3, overflow: 'hidden', maxHeight: 320, overflowY: 'auto' }}>
-                        <MenuList autoFocusItem={open}>
-                          {Object.entries(NFTs).map(([key, value]) => {
-                            const nft = value.nfts[0];
-                            const isSelected = key === selectedKey;
-                            return (
-                              <MenuItem
-                                key={key}
-                                onClick={() => handleSelect(key)}
-                                selected={isSelected}
-                                sx={{ p: 1 }}
-                              >
-                                <Stack direction="row" spacing={2} alignItems="center">
-                                  <Avatar variant="rounded" src={nft.imageURI} sx={{ width: 48, height: 48 }} />
-                                  <Box>
-                                    <Typography fontWeight="500">{nft.metadata?.name || 'NFT'}</Typography>
-                                    <Typography variant="caption" color="text.secondary">
-                                      {nft.issuer} / Taxon {nft.nftokenTaxon}
-                                    </Typography>
-                                  </Box>
-                                </Stack>
-                              </MenuItem>
-                            );
-                          })}
-                        </MenuList>
-                      </Paper>
-                    </Grow>
-                  )}
-                </Popper>
+                {collectionKeys.length > 0 && (
+                  <Popper open={open} anchorEl={anchorRef.current} placement="bottom" transition disablePortal modifiers={[{ name: 'offset', options: { offset: [0, 12] } }]}
+                    style={{ zIndex: 1300, width: '100%' }}>
+                    {({ TransitionProps }) => (
+                      <Grow {...TransitionProps}>
+                        <Paper sx={{ mt: 2, borderRadius: 3, overflow: 'hidden', maxHeight: 320, overflowY: 'auto' }}>
+                          <MenuList autoFocusItem={open}>
+                            {collectionKeys.map((key) => {
+                              const nft = NFTs[key].nfts?.[0];
+                              const isSelected = key === selectedKey;
+                              return nft ? (
+                                <MenuItem
+                                  key={key}
+                                  onClick={() => handleSelect(key)}
+                                  selected={isSelected}
+                                  sx={{ p: 1 }}
+                                >
+                                  <Stack direction="row" spacing={2} alignItems="center">
+                                    <Avatar variant="rounded" src={nft.imageURI} sx={{ width: 48, height: 48 }} />
+                                    <Box>
+                                      <Typography fontWeight="500">{nft.metadata?.name || 'NFT'}</Typography>
+                                      <Typography variant="caption" color="text.secondary">
+                                        {nft.issuer} / Taxon {nft.nftokenTaxon}
+                                      </Typography>
+                                    </Box>
+                                  </Stack>
+                                </MenuItem>
+                              ) : null;
+                            })}
+                          </MenuList>
+                        </Paper>
+                      </Grow>
+                    )}
+                  </Popper>
+                )}
               </Box>
             </ClickAwayListener>
           </Box>
