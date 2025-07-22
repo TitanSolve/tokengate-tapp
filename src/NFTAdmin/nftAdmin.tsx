@@ -5,8 +5,8 @@ import { describeConditionTree } from './utils';
 import { Typography } from '@mui/material';
 import { ConditionTree } from './types';
 import { Loader2 } from "lucide-react";
-// import * as sdk from "matrix-js-sdk";
-// import API_URLS from "../config.ts";
+import * as sdk from "matrix-js-sdk";
+import API_URLS from "../config.ts";
 import { useWidgetApi } from "@matrix-widget-toolkit/react";
 // import { l } from 'node_modules/vite/dist/node/types.d-aGj9QkWt.js';
 
@@ -16,55 +16,55 @@ export const NFTAdmin = () => {
 
   useEffect(() => {
     console.log('widgetApi widgetParameters:', widgetApi.widgetParameters);
-    //The user who has power_level > 100 can only access this Widget
-    // const loadData = async () => {
-    //   try {
-    //     const accessToken = API_URLS.accesstoken || " ";
-    //     const userId = API_URLS.synapseUserId || "@tokengatebot:synapse.textrp.io";
-    //     const baseUrl: string = API_URLS.synapseUrl || "http://localhost:8008";
-    //     console.log('baseUrl:', baseUrl);
-    //     const matrixClient = sdk.createClient({
-    //       baseUrl,
-    //       accessToken,
-    //       userId
-    //     });
-    //     console.log('Matrix client created:', matrixClient);
-    //     const roomId = widgetApi.widgetParameters.roomId || '';
-    //     try {
-    //       await matrixClient.joinRoom(roomId);
-    //       console.log(`🤖 Bot joined room: ${roomId}`);
-    //     } catch (err) {
-    //       console.warn('⚠️ Bot already in room or join failed:', err);
-    //     }
-    //     const currentPowerLevels = await matrixClient.getStateEvent(
-    //       roomId,
-    //       "m.room.power_levels",
-    //       ""
-    //     );
-    //     console.log('Current power levels:', currentPowerLevels);
+    // The user who has power_level > 100 can only access this Widget
+    const loadData = async () => {
+      try {
+        const accessToken = API_URLS.accesstoken || " ";
+        const userId = API_URLS.synapseUserId || "@tokengatebot:synapse.textrp.io";
+        const baseUrl: string = API_URLS.synapseUrl || "http://localhost:8008";
+        console.log('baseUrl:', baseUrl);
+        const matrixClient = sdk.createClient({
+          baseUrl,
+          accessToken,
+          userId
+        });
+        console.log('Matrix client created:', matrixClient);
+        const roomId = widgetApi.widgetParameters.roomId || '';
+        try {
+          await matrixClient.joinRoom(roomId);
+          console.log(`🤖 Bot joined room: ${roomId}`);
+        } catch (err) {
+          console.warn('⚠️ Bot already in room or join failed:', err);
+        }
+        const currentPowerLevels = await matrixClient.getStateEvent(
+          roomId,
+          "m.room.power_levels",
+          ""
+        );
+        console.log('Current power levels:', currentPowerLevels);
 
-    //     const curUserId = widgetApi.widgetParameters.userId || userId;
-    //     console.log('widgetApi widgetParameters:', widgetApi.widgetParameters);
-    //     console.log('Current user ID:', curUserId);
-    //     const userPower = currentPowerLevels.users?.[ curUserId ] ?? currentPowerLevels.users_default ?? 0;
-    //     console.log('User', curUserId, 'power level:', userPower);
+        const curUserId = widgetApi.widgetParameters.userId || userId;
+        console.log('widgetApi widgetParameters:', widgetApi.widgetParameters);
+        console.log('Current user ID:', curUserId);
+        const userPower = currentPowerLevels.users?.[ curUserId ] ?? currentPowerLevels.users_default ?? 0;
+        console.log('User', curUserId, 'power level:', userPower);
 
-    //     if (userPower >= 100) {
-    //       setCheckedPowerLevels(2); // Set to 2 to indicate access granted
-    //       console.log('User has sufficient power level to access the widget.');
-    //     }
-    //     else {
-    //       setCheckedPowerLevels(1); // Set to 1 to indicate no access
-    //       console.log('User does not have sufficient power level to access the widget.');
-    //     }
-    //   } catch (error) {
-    //     console.error('Error loading power levels:', error);
-    //     // setCheckedPowerLevels(0); // Set to 1 to indicate no access
-    //     return;
-    //   }
-    // }
+        if (userPower >= 100) {
+          setCheckedPowerLevels(2); // Set to 2 to indicate access granted
+          console.log('User has sufficient power level to access the widget.');
+        }
+        else {
+          setCheckedPowerLevels(1); // Set to 1 to indicate no access
+          console.log('User does not have sufficient power level to access the widget.');
+        }
+      } catch (error) {
+        console.error('Error loading power levels:', error);
+        setCheckedPowerLevels(0); // Set to 1 to indicate no access
+        return;
+      }
+    }
 
-    // loadData();
+    loadData();
     setCheckedPowerLevels(0);
   }, [widgetApi]);
 
