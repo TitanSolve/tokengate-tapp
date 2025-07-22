@@ -12,6 +12,7 @@ import { useWidgetApi } from "@matrix-widget-toolkit/react";
 
 export const NFTAdmin = () => {
   const [checkedPowerLevels, setCheckedPowerLevels] = useState(0);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const widgetApi = useWidgetApi();
 
   useEffect(() => {
@@ -44,6 +45,7 @@ export const NFTAdmin = () => {
         console.log('Current power levels:', currentPowerLevels);
 
         const curUserId = widgetApi.widgetParameters.userId || userId;
+        setCurrentUserId(curUserId);
         console.log('widgetApi widgetParameters:', widgetApi.widgetParameters);
         console.log('Current user ID:', curUserId);
         const userPower = currentPowerLevels.users?.[ curUserId ] ?? currentPowerLevels.users_default ?? 0;
@@ -135,6 +137,7 @@ export const NFTAdmin = () => {
           editingBasic={editingBasic}
           editingQuantity={editingQuantity}
           editingTraits={editingTraits}
+          userId={currentUserId}
           onKickMessageChange={setKickMessage}
           onTreeChange={handleTreeChange}
           onSave={saveConditionTree}

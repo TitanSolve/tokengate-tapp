@@ -27,6 +27,7 @@ interface NFTAdminContentProps {
   editingBasic: LockCondition | null;
   editingQuantity: ConditionTree | null;
   editingTraits: TraitCondition | null;
+  userId: string;
   onKickMessageChange: (message: string) => void;
   onTreeChange: (tree: ConditionTree) => void;
   onSave: () => void;
@@ -45,6 +46,7 @@ export const NFTAdminContent: React.FC<NFTAdminContentProps> = ({
   displayName,
   initialTab,
   editingBasic,
+  userId,
   // editingQuantity,
   // editingTraits,
   onKickMessageChange,
@@ -118,6 +120,7 @@ export const NFTAdminContent: React.FC<NFTAdminContentProps> = ({
           <Box role="tabpanel" hidden={currentTab !== 'basic'} sx={{ py: 3 }}>
             {currentTab === 'basic' && (
               <BasicConditionForm
+                userId={userId}
                 condition={editingBasic || conditionTree as LockCondition}
                 onChange={onTreeChange}
               />

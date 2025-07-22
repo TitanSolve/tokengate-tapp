@@ -9,7 +9,6 @@ import {
   CardMedia,
   CircularProgress,
   Alert,
-  Button,
 } from '@mui/material';
 import { LockCondition } from '../types';
 import { fetchNFTImageUrl } from '../services/nftImageService';
@@ -17,11 +16,15 @@ import debounce from 'lodash.debounce';
 import API_URLS from '@/config';
 
 interface BasicConditionFormProps {
+  userId: string;
   condition: LockCondition;
   onChange: (updatedCondition: LockCondition) => void;
 }
 
+type GroupedNFTs = Record<string, { nfts: any[] }>;
+
 export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
+  userId,
   condition,
   onChange,
 }) => {
@@ -31,6 +34,73 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   const [nftImageUrl, setNftImageUrl] = useState<string | null>(condition.nftImageUrl);
   const [isLoadingImage, setIsLoadingImage] = useState<boolean>(false);
   const [imageError, setImageError] = useState<string | null>(null);
+
+  const [NFTs, setNFTs] = useState<GroupedNFTs>({});
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchNFT = async () => {
+      console.log('Fetching NFTs for userId:', userId);
+      const xrplAccount = userId.split("@")[1]?.split(":")[0];
+      console.log('Fetching NFTs for XRPL account:', xrplAccount);
+
+      try {
+        const response = await fetch(
+          `${API_URLS.marketPlace}/api/v2/nfts?owner=${xrplAccount}`, //?assets=true`,
+          {
+            method: "GET",
+            headers: {
+              "x-bithomp-token": process.env.bithompToken || "",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch NFT data");
+        }
+
+        const data = await response.json();
+        console.log('NFT data fetched:', data);
+        const rawNFTs: any[] = data.nfts || [];
+
+        const grouped: GroupedNFTs = {};
+
+        for (const nft of rawNFTs) {
+          const imageURI =
+            nft?.metadata?.image
+              ?.replace("ipfs://", "https://ipfs.io/ipfs/")
+              .replace("#", "%23") || "";
+
+          const key = `${nft?.issuer}_${nft?.taxon}`;
+
+          if (!grouped[key]) {
+            grouped[key] = { nfts: [] };
+          }
+
+          grouped[key].nfts.push({
+            ...nft,
+            imageURI,
+            ownerUsername: nft?.ownerDetails?.username || null,
+            collectionName: nft?.collection || null,
+          });
+        }
+
+        setNFTs(grouped);
+        console.log("Grouped NFTs:", grouped);
+      } catch (err: any) {
+        if (err.name !== "AbortError") {
+          console.error(`Error fetching NFTs for ${userId}:`, err);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNFT();
+    setIssuer('1');
+    console.log('NFTs fetched:', NFTs);
+    console.log(loading);
+  }, [userId]);
 
   // Effect to update parent component when values change
   useEffect(() => {
@@ -145,10 +215,6 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
     };
   }, [issuer, taxon, debouncedFetchImage]);
 
-  const handleIssuerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIssuer(e.target.value);
-  };
-
   const handleTaxonChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTaxon(e.target.value);
   };
@@ -156,57 +222,6 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   const handleNftCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(e.target.value, 10);
     setNftCount(isNaN(value) ? 1 : Math.max(1, value));
-  };
-
-  // Direct test function to diagnose API connectivity issues
-  const testDirectAPICall = async () => {
-    if (!issuer || !taxon) {
-      setImageError('Please enter issuer and taxon first');
-      return;
-    }
-
-    setIsLoadingImage(true);
-    setImageError(null);
-
-    try {
-      // Use local proxy to avoid CORS issues
-      const apiUrl = API_URLS.backendUrl //''; // Empty base URL will use the current origin with the proxy path
-      const apiKey = API_URLS.accesstoken || '';
-      const requestBody = {
-        issuer: encodeURIComponent(issuer),
-        taxon: encodeURIComponent(taxon),
-      };
-      const url = `${apiUrl}/api/nfts/image-only`;
-
-      // Make a fetch request directly
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-        body: JSON.stringify(requestBody),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
-      }
-
-      const data = await response.json();
-      if (!data.imageUrl) {
-        throw new Error('No image URL in response');
-      }
-
-      setNftImageUrl(data.imageUrl);
-      setImageError(null);
-    } catch (error) {
-      console.error('🔍 DIRECT TEST: Error:', error);
-      setImageError(`API Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
-      setNftImageUrl(null);
-    } finally {
-      setIsLoadingImage(false);
-    }
   };
 
   return (
@@ -218,50 +233,8 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
         Require users to own a specific NFT to access the room
       </Typography>
 
-      {/* Test button to diagnose API issues */}
-      <Box sx={{ mb: 3 }}>
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={testDirectAPICall}
-          disabled={isLoadingImage || !issuer || !taxon}
-          sx={{ mb: 1 }}
-        >
-          Test Direct API Call
-        </Button>
-        <Typography variant="caption" display="block" sx={{ color: 'text.secondary' }}>
-          Click to diagnose API connectivity issues
-        </Typography>
-      </Box>
-
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
-          <TextField
-            fullWidth
-            label="Issuer Address"
-            variant="outlined"
-            value={issuer}
-            onChange={handleIssuerChange}
-            placeholder="Enter the NFT issuer address"
-            margin="normal"
-            helperText="The account that issued the NFT collection"
-            sx={{
-              '& .MuiOutlinedInput-root': {
-                '&:hover fieldset': {
-                  borderColor: 'primary.light',
-                },
-                '&.Mui-focused fieldset': {
-                  borderColor: 'primary.main',
-                  borderWidth: 2,
-                },
-              },
-              '& .MuiFormHelperText-root': {
-                fontSize: '0.75rem',
-                marginTop: 0.5
-              }
-            }}
-          />
-
           <TextField
             fullWidth
             label="Taxon"
