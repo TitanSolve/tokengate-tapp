@@ -414,7 +414,6 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
                     borderRadius={3}
                     p={2}
                     sx={{ bgcolor: 'background.paper', boxShadow: 2 }}
-                    ref={anchorRef}
                   >
                     {issuer !== '' && taxon !== '' ? (
                       <>
