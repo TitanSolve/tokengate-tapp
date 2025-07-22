@@ -176,7 +176,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
     console.log('Updating parent component with new values:', issuer, taxon, nftCount, nftImageUrl, loadedNftCount, condition.nftCount);
 
     //--------edit this part to avoid empty updates--------
-    if ((issuer === '' && taxon === '' && nftCount === 1 && nftImageUrl === '') &&
+    if ((issuer === '' && taxon === '' && nftCount === 1 && (nftImageUrl === '' || nftImageUrl === null) ) &&
       (loadedNftCount === condition.nftCount)) {
       console.log('No changes detected, skipping update');
       return;
