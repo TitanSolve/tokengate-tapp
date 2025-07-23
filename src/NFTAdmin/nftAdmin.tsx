@@ -81,6 +81,7 @@ export const NFTAdmin = () => {
     savedMessage,
     saveError,
     displayName,
+    saveRequestResult,
     handleTabChange,
     handleTreeChange,
     saveConditionTree,
@@ -141,6 +142,7 @@ export const NFTAdmin = () => {
           editingQuantity={editingQuantity}
           editingTraits={editingTraits}
           userId={currentUserId}
+          saveRequestResult={saveRequestResult}
           onKickMessageChange={setKickMessage}
           onTreeChange={handleTreeChange}
           onSave={saveConditionTree}

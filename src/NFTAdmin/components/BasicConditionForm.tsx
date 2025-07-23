@@ -23,7 +23,7 @@ import API_URLS from '@/config';
 interface BasicConditionFormProps {
   userId: string | null;
   condition: LockCondition;
-  saveChanged: boolean;
+  saveChanged: number; // 0: not requested, 1: success, 2: pending
   onChange: (updatedCondition: LockCondition) => void;
 }
 
@@ -44,7 +44,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   const [taxon, setTaxon] = useState('');
   const [nftCount, setNftCount] = useState(1);
   const [nftImageUrl, setNftImageUrl] = useState<string | null>('');
-  const [isSavedChanges, setIsSavedChanges] = useState(false);
+  const [isSavedChanges, setIsSavedChanges] = useState(0); // 0: not saved, 2: saved, 1: pending
   // const [isLoadingImage, setIsLoadingImage] = useState<boolean>(false);
   const [imageError, setImageError] = useState<string | null>(null);
   const [NFTs, setNFTs] = useState<GroupedNFTs>({});
@@ -58,6 +58,12 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   useEffect(() => {
     console.log('saveChanged:', saveChanged);
     setIsSavedChanges(saveChanged);
+    if (saveChanged === 2) {  // 1: pending, 2: success
+      setLoadedIssuer(condition.issuer || '');
+      setLoadedTaxon(condition.taxon || '');
+      setLoadedNftCount(condition.nftCount || 1);
+      setLoadedNftImageUrl(condition.nftImageUrl || null);
+    }
   }, [saveChanged] );
 
   useEffect(() => {
@@ -67,7 +73,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
     }
 
     console.log('Condition changed:', condition, isSavedChanges, loadedIssuer, loadedTaxon);
-    if (isSavedChanges || (loadedIssuer === '' && loadedTaxon === '') ) {
+    if (isSavedChanges === 0 || (loadedIssuer === '' && loadedTaxon === '') ) {
       console.log('initialized');
       setLoadedIssuer(condition.issuer || '');
       setLoadedTaxon(condition.taxon || '');

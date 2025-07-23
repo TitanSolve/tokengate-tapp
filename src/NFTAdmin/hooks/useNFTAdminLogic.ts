@@ -30,6 +30,7 @@ export const useNFTAdminLogic = () => {
   const [activeTab, setActiveTab] = useState<string>("basic");
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [savedMessage, setSavedMessage] = useState(false);
+  const [saveRequestResult, setSaveRequestResult] = useState(0);  // 0: not requested, 1: pending, 2: success
   const [saveError, setSaveError] = useState<string | null>(null);
   const [displayName, setDisplayName] = useState<string | null>(null);
 
@@ -360,8 +361,12 @@ export const useNFTAdminLogic = () => {
 
       setSavedConditionTree(treeToSave);
       setHasUnsavedChanges(false);
+
+      setSaveRequestResult(2);  // 1: pending
+
       setSavedMessage(true);
       setTimeout(() => setSavedMessage(false), 3000);
+      setTimeout(() => setSaveRequestResult(1), 3000);
     } catch (error) {
       console.error("Save error:", error);
       setSaveError("Failed to save settings");
@@ -377,6 +382,7 @@ export const useNFTAdminLogic = () => {
     activeTab,
     kickMessage,
     hasUnsavedChanges,
+    saveRequestResult,
     savedMessage,
     saveError,
     displayName,
