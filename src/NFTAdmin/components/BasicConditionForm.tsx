@@ -340,7 +340,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   return (
     <Box sx={{ mt: 2 }}>
       <Grid container spacing={3}>
-        <Grid item xs={12} md={8} sx={{ cursor: 'pointer' }} >
+        <Grid item xs={12} md={8} >
           <Box p={2} maxWidth={480} mx="auto" textAlign="center">
             <ClickAwayListener onClickAway={handleClickAway}>
               <Box p={2} maxWidth={480} mx="auto" textAlign="center">
@@ -466,93 +466,95 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
 
         <Divider flexItem sx={{ width: '100%', mt: 2, mb: 2 }} />
 
-        <Box p={2} maxWidth={480} mx="auto" textAlign="center">
+        <Grid item xs={12} md={8} >
           <Box p={2} maxWidth={480} mx="auto" textAlign="center">
-            <Typography variant="h6" fontWeight="bold" mb={1}>
-              Current Tokengate Role
-            </Typography>
-            <Box position="relative">
-              <Stack
-                direction="column"
-                alignItems="center"
-                spacing={2}
-                border={1}
-                borderRadius={3}
-                p={2}
-                sx={{ bgcolor: 'background.paper', boxShadow: 2 }}
-              >
-                {loadedIssuer !== '' || loadedTaxon !== '' ? (
-                  <>
-                    <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
-                      {loadedNftImageUrl ? (
-                        <Card sx={{ maxWidth: 128 }}>
-                          <CardMedia
-                            component="img"
-                            height="128"
-                            image={loadedNftImageUrl}
-                            alt="NFT Preview"
-                            sx={{ objectFit: 'contain' }}
-                          />
-                        </Card>
-                      ) : (
-                        <Box
-                          sx={{
-                            height: 128,
-                            width: 128,
-                            bgcolor: 'rgba(0,0,0,0.04)',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            border: '1px dashed rgba(0,0,0,0.2)',
-                            flexDirection: 'column',
-                            padding: 2
-                          }}
-                        >
-                          {imageError ? (
-                            <Alert severity="error" sx={{ fontSize: '0.75rem', mb: 1, width: '100%' }}>
-                              {imageError}
-                            </Alert>
-                          ) : null}
-                          <Typography variant="body2" color="textSecondary" align="center">
-                            No image available.
-                          </Typography>
-                        </Box>
-                      )}
-                    </Stack>
+            <Box p={2} maxWidth={480} mx="auto" textAlign="center">
+              <Typography variant="h6" fontWeight="bold" mb={1}>
+                Current Tokengate Role
+              </Typography>
+              <Box position="relative">
+                <Stack
+                  direction="column"
+                  alignItems="center"
+                  spacing={2}
+                  border={1}
+                  borderRadius={3}
+                  p={2}
+                  sx={{ bgcolor: 'background.paper', boxShadow: 2 }}
+                >
+                  {loadedIssuer !== '' || loadedTaxon !== '' ? (
+                    <>
+                      <Stack direction="row" spacing={2} alignItems="center" justifyContent="center">
+                        {loadedNftImageUrl ? (
+                          <Card sx={{ maxWidth: 128 }}>
+                            <CardMedia
+                              component="img"
+                              height="128"
+                              image={loadedNftImageUrl}
+                              alt="NFT Preview"
+                              sx={{ objectFit: 'contain' }}
+                            />
+                          </Card>
+                        ) : (
+                          <Box
+                            sx={{
+                              height: 128,
+                              width: 128,
+                              bgcolor: 'rgba(0,0,0,0.04)',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              alignItems: 'center',
+                              border: '1px dashed rgba(0,0,0,0.2)',
+                              flexDirection: 'column',
+                              padding: 2
+                            }}
+                          >
+                            {imageError ? (
+                              <Alert severity="error" sx={{ fontSize: '0.75rem', mb: 1, width: '100%' }}>
+                                {imageError}
+                              </Alert>
+                            ) : null}
+                            <Typography variant="body2" color="textSecondary" align="center">
+                              No image available.
+                            </Typography>
+                          </Box>
+                        )}
+                      </Stack>
 
-                    <Divider flexItem sx={{ width: '100%', ml: 1, mt: 1, mb: 1 }} />
+                      <Divider flexItem sx={{ width: '100%', ml: 1, mt: 1, mb: 1 }} />
 
-                    <Grid container spacing={3} justifyContent="center">
-                      <Typography variant="caption" sx={{ wordBreak: 'break-all' }}>Issuer: {loadedIssuer}</Typography>
-                      <Typography variant="caption">Taxon: {loadedTaxon}</Typography>
-                    </Grid>
-                    <Typography variant="caption">Count: {loadedNftCount}</Typography>
-                    {/* <TextField
-                      label="Minimum NFT Count"
-                      type="number"
-                      value={loadedNftCount}
-                      onChange={handleLoadedNftCountChange}
-                      fullWidth
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="start">
-                            <FormatListNumberedIcon />
-                          </InputAdornment>
-                        ),
-                        inputProps: { min: 1 }
-                      }}
-                      sx={{ borderRadius: 2, marginTop: 4 }}
-                    /> */}
-                  </>
-                ) : (
-                  <Typography variant="body2" color="text.secondary">
-                    Role is not set. Please set a role.
-                  </Typography>
-                )}
-              </Stack>
+                      <Grid container spacing={3} justifyContent="center">
+                        <Typography variant="caption" sx={{ wordBreak: 'break-all' }}>Issuer: {loadedIssuer}</Typography>
+                        <Typography variant="caption">Taxon: {loadedTaxon}</Typography>
+                      </Grid>
+                      <Typography variant="caption">Count: {loadedNftCount}</Typography>
+                      {/* <TextField
+                        label="Minimum NFT Count"
+                        type="number"
+                        value={loadedNftCount}
+                        onChange={handleLoadedNftCountChange}
+                        fullWidth
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <FormatListNumberedIcon />
+                            </InputAdornment>
+                          ),
+                          inputProps: { min: 1 }
+                        }}
+                        sx={{ borderRadius: 2, marginTop: 4 }}
+                      /> */}
+                    </>
+                  ) : (
+                    <Typography variant="body2" color="text.secondary">
+                      Role is not set. Please set a role.
+                    </Typography>
+                  )}
+                </Stack>
+              </Box>
             </Box>
           </Box>
-        </Box>
+        </Grid>
       </Grid>
     </Box>
   );
