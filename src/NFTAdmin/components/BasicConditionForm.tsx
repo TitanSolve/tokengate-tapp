@@ -68,6 +68,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
 
     console.log('Condition changed:', condition, isSavedChanges, loadedIssuer, loadedTaxon);
     if (isSavedChanges || (loadedIssuer === '' && loadedTaxon === '') ) {
+      console.log('initialized');
       setLoadedIssuer(condition.issuer || '');
       setLoadedTaxon(condition.taxon || '');
       setLoadedNftCount(condition.nftCount || 1);
