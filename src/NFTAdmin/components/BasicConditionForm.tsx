@@ -213,14 +213,14 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
     conditionBasic.type = 'lock';
 
     let changedIssuer = issuer || '';
-    let changedTaxon = taxon || '';
+    let changedTaxon = taxon;
     let changedNftCount = nftCount || 1;
     let changedNftImageUrl = nftImageUrl || null;
 
     if (changedIssuer === '' && changedTaxon === '') {
       changedIssuer = conditionBasic.issuer || '';
-      changedTaxon = conditionBasic.taxon || '';
-      changedNftCount = loadedNftCount || 1;
+      changedTaxon = conditionBasic.taxon;
+      changedNftCount = condition.nftCount || 1;
       changedNftImageUrl = conditionBasic.nftImageUrl || null;
     }
 
