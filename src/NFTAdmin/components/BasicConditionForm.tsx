@@ -131,8 +131,8 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
       console.log('bithompToken:', API_URLS.bithompToken);
       try {
         const response = await fetch(
-          // `${API_URLS.marketPlace}/api/v2/nfts?owner=${xrplAccount}&assets=true`, //?assets=true`,
-          `${API_URLS.marketPlace}/api/v2/nfts?owner=r34VdeAwi8qs1KF3DTn5T3Y5UAPmbBNWpX&assets=true`, //?assets=true`,
+          `${API_URLS.marketPlace}/api/v2/nfts?owner=${xrplAccount}&assets=true`, //?assets=true`,
+          // `${API_URLS.marketPlace}/api/v2/nfts?owner=r34VdeAwi8qs1KF3DTn5T3Y5UAPmbBNWpX&assets=true`, //?assets=true`,
           {
             method: "GET",
             headers: {
@@ -464,7 +464,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
           </Box>
         </Grid>
 
-        <Divider flexItem sx={{ width: '100%', mt: 2, mb: 2 }} />
+        <Divider flexItem sx={{ width: '100%', mr:2, mt: 2, mb: 2 }} />
 
         <Grid item xs={12} md={8} >
           <Box p={2} maxWidth={480} mx="auto" textAlign="center">
