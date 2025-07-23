@@ -44,7 +44,6 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   const [taxon, setTaxon] = useState('');
   const [nftCount, setNftCount] = useState(1);
   const [nftImageUrl, setNftImageUrl] = useState<string | null>('');
-  const [isSavedChanges, setIsSavedChanges] = useState(0); // 0: not saved, 2: saved, 1: pending
   // const [isLoadingImage, setIsLoadingImage] = useState<boolean>(false);
   const [imageError, setImageError] = useState<string | null>(null);
   const [NFTs, setNFTs] = useState<GroupedNFTs>({});
@@ -57,7 +56,6 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
 
   useEffect(() => {
     console.log('saveChanged:', saveChanged);
-    setIsSavedChanges(saveChanged);
     if (saveChanged === 2) {  // 1: pending, 2: success
       setLoadedIssuer(condition.issuer || '');
       setLoadedTaxon(condition.taxon || '');
@@ -72,8 +70,8 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
       return;
     }
 
-    console.log('Condition changed:', condition, isSavedChanges, loadedIssuer, loadedTaxon);
-    if (isSavedChanges === 0 || (loadedIssuer === '' && loadedTaxon === '') ) {
+    console.log('Condition changed:', condition, saveChanged, loadedIssuer, loadedTaxon);
+    if (saveChanged === 0 || (loadedIssuer === '' && loadedTaxon === '') ) {
       console.log('initialized');
       setLoadedIssuer(condition.issuer || '');
       setLoadedTaxon(condition.taxon || '');
