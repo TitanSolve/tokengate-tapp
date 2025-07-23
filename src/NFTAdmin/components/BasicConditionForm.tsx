@@ -73,7 +73,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
     }
 
     console.log('Condition changed:', condition, isSavedChanges, loadedIssuer, loadedTaxon);
-    if (isSavedChanges !== 2 || (loadedIssuer === '' && loadedTaxon === '') ) {
+    if (isSavedChanges === 0 || (loadedIssuer === '' && loadedTaxon === '') ) {
       console.log('initialized');
       setLoadedIssuer(condition.issuer || '');
       setLoadedTaxon(condition.taxon || '');
