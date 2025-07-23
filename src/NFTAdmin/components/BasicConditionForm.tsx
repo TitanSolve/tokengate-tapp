@@ -226,7 +226,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
 
 
     if (hasChanged) {
-      console.log('-----------conditionBasic changed---------------');
+      console.log('-----------conditionBasic changed---------------', changedTaxon, typeof changedTaxon);
       onChange({
         ...conditionBasic,
         issuer: changedIssuer,

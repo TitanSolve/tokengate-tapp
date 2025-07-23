@@ -214,14 +214,17 @@ export const useNFTAdminLogic = () => {
   };
 
   const handleTreeChange = (updatedTree: ConditionTree) => {
-    console.log("Handling tree change:", updatedTree);
+    console.log("Handling tree change:", updatedTree,);
     console.log("EditingBasic before change:", editingBasic);
     setSaveRequestResult(1); // 1: pending
     setHasUnsavedChanges(true);
 
     switch (updatedTree.type) {
       case "lock":
-        setEditingBasic(updatedTree as LockCondition);
+        let basicLockCondition = updatedTree as LockCondition;
+        basicLockCondition.taxon = String( updatedTree.taxon);
+        console.log("Setting editingBasic with:", basicLockCondition);
+        setEditingBasic(basicLockCondition);
         break;
       case "group":
         setEditingQuantity(updatedTree as LockGroup);
