@@ -65,7 +65,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   }, [saveChanged] );
 
   useEffect(() => {
-    if( condition.issuer === '' || condition.taxon === '' ) {
+    if( saveChanged !== 0 && (condition.issuer === '' || condition.taxon === '') ) {
       console.warn('Condition issuer or taxon is empty, skipping initialization');
       return;
     }
