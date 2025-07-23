@@ -36,10 +36,10 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   onChange,
 }) => {
   const [isInitialized, setIsInitialized] = useState(false);
-  const [loadedIssuer, setLoadedIssuer] = useState(condition.issuer || '');
-  const [loadedTaxon, setLoadedTaxon] = useState(condition.taxon || '');
-  const [loadedNftCount, setLoadedNftCount] = useState(condition.nftCount || 1);
-  const [loadedNftImageUrl, setLoadedNftImageUrl] = useState<string | null>(condition.nftImageUrl);
+  const [loadedIssuer, setLoadedIssuer] = useState('');
+  const [loadedTaxon, setLoadedTaxon] = useState('');
+  const [loadedNftCount, setLoadedNftCount] = useState(1);
+  const [loadedNftImageUrl, setLoadedNftImageUrl] = useState<string | null>('');
   const [issuer, setIssuer] = useState('');
   const [taxon, setTaxon] = useState('');
   const [nftCount, setNftCount] = useState(1);
