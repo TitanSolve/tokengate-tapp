@@ -23,6 +23,7 @@ import API_URLS from '@/config';
 interface BasicConditionFormProps {
   userId: string | null;
   condition: LockCondition;
+  saveChanged: boolean;
   onChange: (updatedCondition: LockCondition) => void;
 }
 
@@ -31,6 +32,7 @@ type GroupedNFTs = Record<string, { nfts: any[] }>;
 export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   userId,
   condition,
+  saveChanged,
   onChange,
 }) => {
   const [isInitialized, setIsInitialized] = useState(false);
@@ -52,6 +54,11 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const anchorRef = React.useRef(null);
+
+  useEffect(() => {
+    console.log('saveChanged:', saveChanged);
+    setIsSavedChanges(saveChanged);
+  }, [saveChanged] );
 
   useEffect(() => {
     if( condition.issuer === '' || condition.taxon === '' ) {
@@ -320,10 +327,10 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
     setNftCount(isNaN(value) ? 1 : Math.max(1, value));
   };
 
-  const handleLoadedNftCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(e.target.value, 10);
-    setLoadedNftCount(isNaN(value) ? 1 : Math.max(1, value));
-  };
+  // const handleLoadedNftCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const value = parseInt(e.target.value, 10);
+  //   setLoadedNftCount(isNaN(value) ? 1 : Math.max(1, value));
+  // };
 
   return (
     <Box sx={{ mt: 2 }}>
@@ -514,7 +521,8 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
                       <Typography variant="caption" sx={{ wordBreak: 'break-all' }}>Issuer: {loadedIssuer}</Typography>
                       <Typography variant="caption">Taxon: {loadedTaxon}</Typography>
                     </Grid>
-                    <TextField
+                    <Typography variant="caption">Count: {loadedNftCount}</Typography>
+                    {/* <TextField
                       label="Minimum NFT Count"
                       type="number"
                       value={loadedNftCount}
@@ -529,7 +537,7 @@ export const BasicConditionForm: React.FC<BasicConditionFormProps> = ({
                         inputProps: { min: 1 }
                       }}
                       sx={{ borderRadius: 2, marginTop: 4 }}
-                    />
+                    /> */}
                   </>
                 ) : (
                   <Typography variant="body2" color="text.secondary">

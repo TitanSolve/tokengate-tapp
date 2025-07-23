@@ -120,6 +120,7 @@ export const NFTAdminContent: React.FC<NFTAdminContentProps> = ({
           <Box role="tabpanel" hidden={currentTab !== 'basic'} sx={{ py: 3 }}>
             {currentTab === 'basic' && (
               <BasicConditionForm
+                saveChanged={hasUnsavedChanges}
                 userId={userId}
                 condition={editingBasic || conditionTree as LockCondition}
                 onChange={onTreeChange}
